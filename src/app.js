@@ -17,6 +17,9 @@ const Item = class {
   get state() {
     return this.#state;
   }
+  search(title) {
+    return this.#title.includes(title) ? this : null;
+  }
 };
 const ItemList = class {
   #itemList = new Set();
@@ -29,6 +32,10 @@ const ItemList = class {
   }
   getItemsLength() {
     return this.#itemList.size;
+  }
+  search(title) {
+    if (!title) return;
+    return [...this.#itemList].map((item) => item.search(title)).filter((state) => state);
   }
 };
 const Renderer = class {
@@ -46,23 +53,27 @@ const Renderer = class {
     err('must be overrided');
   }
   get itemList() {
-    return this.#itemList.getItems();
+    return this.#itemList;
   }
 };
-
 const DomRenderer = class extends Renderer {
   #parent;
+  #searchData = [];
   constructor(parent) {
     super();
     this.parent = parent;
     this.ul = qs(`${this.parent} .item-list`);
     this.itemCnt = qs(`${this.parent} .item-cnt`);
+    this.searchBar = qs(`${this.parent} .searchBar`);
   }
   _render() {
-    const { ul, itemCnt, itemList } = this;
+    const { ul, itemCnt, searchBar } = this;
+    const { itemList } = this;
     ul.innerHTML = '';
-    const state = itemList
+    const itemListData = itemList.getItems();
+    const state = (this.#searchData.length ? this.#searchData : itemListData)
       .map((item) => {
+        if (!item) return;
         const li = ul.appendChild(el('li', { appendChild: el('span', { innerHTML: item.title }), setAttribute: ['class', 'item'] }));
         li.onclick = () => {
           item.toggle();
@@ -70,8 +81,14 @@ const DomRenderer = class extends Renderer {
         };
         return item.state;
       })
-      .filter((state) => state).length;
-    itemCnt.innerHTML = `${state} / ${itemList.length}`;
+      .filter((item) => item).length;
+    itemCnt.innerHTML = `${state} / ${itemList.getItemsLength()}`;
+
+    searchBar.onkeyup = (e) => {
+      const input = e.target.value.trim();
+      this.#searchData = itemList.search(input) ? itemList.search(input) : itemListData;
+      this._render();
+    };
   }
 };
 
