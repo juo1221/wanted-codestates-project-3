@@ -1,18 +1,49 @@
 import './app.scss';
 import { err } from '@Utils/util';
-
+import { el } from '@Utils/util';
+import { qs } from '@Utils/util';
+const Item = class {
+  #title;
+  #state = false;
+  constructor(title) {
+    this.#title = title;
+  }
+  get title() {
+    return this.#title;
+  }
+  toggle() {
+    this.#state = !this.#title;
+  }
+};
+const ItemList = class {
+  #itemList = new Set();
+  setItem(item) {
+    if (!(item instanceof Item)) err(`invalid item : ${item}`);
+    this.#itemList.add(item);
+  }
+  getItems() {
+    return [...this.#itemList];
+  }
+  getItemsLength() {
+    return this.#itemList.size;
+  }
+};
 const Renderer = class {
-  #_info;
+  #itemList = new ItemList();
   async render(data) {
     if (!(data instanceof Data)) err(`invalid data : ${data}`);
-    this.#_info = await data.getData();
+    const { datas } = await data.getData();
+    datas.forEach((data) => {
+      const { name, emoji } = data;
+      this.#itemList.setItem(new Item(`${emoji} ${name}`));
+    });
     this._render();
   }
   _render() {
     err('must be overrided');
   }
-  get info() {
-    return this.#_info;
+  get itemList() {
+    return this.#itemList.getItems();
   }
 };
 
@@ -23,8 +54,11 @@ const DomRenderer = class extends Renderer {
     this.#parent = parent;
   }
   _render() {
-    const { datas } = this.info;
-    console.log(datas);
+    const ul = qs(`${this.#parent} .item-list`);
+    ul.innerHTML = '';
+    this.itemList.forEach((item) =>
+      ul.appendChild(el('li', { appendChild: el('span', { innerHTML: item.title }), setAttribute: ['class', 'item'] })),
+    );
   }
 };
 
@@ -65,5 +99,5 @@ const ValidInfo = class {
   }
 };
 const data = new JsonData('/api/options');
-const renderer = new DomRenderer('#page');
+const renderer = new DomRenderer('#container');
 renderer.render(data);
