@@ -1,7 +1,7 @@
 export const err = (msg) => {
   throw new Error(msg);
 };
-const el = (tag, attr = {}) => {
+export const el = (tag, attr = {}) => {
   return Object.entries(attr).reduce((el, [key, val]) => {
     typeof el[key] == "function"
       ? Array.isArray(el[key])
