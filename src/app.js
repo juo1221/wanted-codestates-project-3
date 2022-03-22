@@ -17,8 +17,14 @@ const Item = class {
   get state() {
     return this.#state;
   }
+  resetState() {
+    this.#state = false;
+  }
   search(title) {
     return this.#title.includes(title) ? this : null;
+  }
+  find() {
+    return this.#state ? this : null;
   }
 };
 const ItemList = class {
@@ -30,20 +36,28 @@ const ItemList = class {
   getItems() {
     return [...this.#itemList];
   }
-  getItemsLength() {
-    return this.#itemList.size;
-  }
   search(title) {
     if (!title) return;
     return [...this.#itemList].map((item) => item.search(title)).filter((state) => state);
+  }
+  find() {
+    return [...this.#itemList].filter((item) => item.find());
+  }
+  removeItem(item) {
+    if (!(item instanceof Item)) err(`invalid item : ${item}`);
+    this.#itemList.delete(item);
+  }
+  clear() {
+    this.#itemList.clear();
   }
 };
 const Renderer = class {
   #itemList = new ItemList();
   #selectedItemList = new ItemList();
-  async render(data) {
-    if (!(data instanceof Data)) err(`invalid data : ${data}`);
-    const { datas } = await data.getData();
+  #data;
+  async render() {
+    if (!this.#data || !(this.#data instanceof Data)) err(`invalid data : ${this.#data}`);
+    const { datas } = await this.#data.getData();
     datas.forEach((data) => {
       const { name, emoji } = data;
       this.#itemList.setItem(new Item(`${emoji} ${name}`));
@@ -58,6 +72,9 @@ const Renderer = class {
   }
   get selectedItemList() {
     return this.#selectedItemList;
+  }
+  set data(data) {
+    this.#data = data;
   }
 };
 const DomRenderer = class extends Renderer {
@@ -76,6 +93,45 @@ const DomRenderer = class extends Renderer {
     this.selectedUl = qs(`${this.selectedParent} .item-list`);
     this.selectedItemCnt = qs(`${this.selectedParent} .item-cnt`);
     this.selectedSearchBar = qs(`${this.selectedParent} .searchBar`);
+    const { itemList, selectedItemList } = this;
+    const [resetBtn, mutliLeftBtn, multiRightBtn, leftBtn, rightBtn] = Array.from(document.querySelectorAll('.move-buttons .btn'));
+    resetBtn.onclick = () => {
+      itemList.clear();
+      selectedItemList.clear();
+      this.render();
+    };
+    mutliLeftBtn.onclick = () => {
+      selectedItemList.getItems().forEach((item) => {
+        item.resetState();
+        itemList.setItem(item);
+      });
+      selectedItemList.clear();
+      this._render();
+    };
+    multiRightBtn.onclick = () => {
+      itemList.getItems().forEach((item) => {
+        item.resetState();
+        selectedItemList.setItem(item);
+      });
+      itemList.clear();
+      this._render();
+    };
+    leftBtn.onclick = () => {
+      selectedItemList.find().forEach((item) => {
+        item.resetState();
+        selectedItemList.removeItem(item);
+        itemList.setItem(item);
+      });
+      this._render();
+    };
+    rightBtn.onclick = () => {
+      itemList.find().forEach((item) => {
+        item.resetState();
+        itemList.removeItem(item);
+        selectedItemList.setItem(item);
+      });
+      this._render();
+    };
   }
   _render() {
     const { ul, itemCnt, searchBar, selectedUl, selectedItemCnt, selectedSearchBar } = this;
@@ -84,7 +140,6 @@ const DomRenderer = class extends Renderer {
     selectedUl.innerHTML = '';
     const itemListData = itemList.getItems();
     const SelectedItemListData = selectedItemList.getItems();
-    console.log(this.#searchData);
     this.f(this.#searchData, itemListData, ul, itemCnt, searchBar, itemList);
     this.f(this.#selectedSearchData, SelectedItemListData, selectedUl, selectedItemCnt, selectedSearchBar, selectedItemList);
   }
@@ -155,6 +210,8 @@ const ValidInfo = class {
     return this.#private;
   }
 };
+
 const data = new JsonData('/api/options');
 const renderer = new DomRenderer(['#container-avaliable', '#container-selected']);
-renderer.render(data);
+renderer.data = data;
+renderer.render();
