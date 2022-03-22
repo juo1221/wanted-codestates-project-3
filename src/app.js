@@ -40,6 +40,7 @@ const ItemList = class {
 };
 const Renderer = class {
   #itemList = new ItemList();
+  #selectedItemList = new ItemList();
   async render(data) {
     if (!(data instanceof Data)) err(`invalid data : ${data}`);
     const { datas } = await data.getData();
@@ -55,38 +56,64 @@ const Renderer = class {
   get itemList() {
     return this.#itemList;
   }
+  get selectedItemList() {
+    return this.#selectedItemList;
+  }
 };
 const DomRenderer = class extends Renderer {
   #parent;
   #searchData = [];
+  #selectedData = [];
+  #selectedSearchData = [];
   constructor(parent) {
     super();
-    this.parent = parent;
-    this.ul = qs(`${this.parent} .item-list`);
-    this.itemCnt = qs(`${this.parent} .item-cnt`);
-    this.searchBar = qs(`${this.parent} .searchBar`);
+    this.parentAvaliable = parent[0];
+    this.ul = qs(`${this.parentAvaliable} .item-list`);
+    this.itemCnt = qs(`${this.parentAvaliable} .item-cnt`);
+    this.searchBar = qs(`${this.parentAvaliable} .searchBar`);
+
+    this.selectedParent = parent[1];
+    this.selectedUl = qs(`${this.selectedParent} .item-list`);
+    this.selectedItemCnt = qs(`${this.selectedParent} .item-cnt`);
+    this.selectedSearchBar = qs(`${this.selectedParent} .searchBar`);
   }
   _render() {
-    const { ul, itemCnt, searchBar } = this;
-    const { itemList } = this;
+    const { ul, itemCnt, searchBar, selectedUl, selectedItemCnt, selectedSearchBar } = this;
+    const { itemList, selectedItemList } = this;
     ul.innerHTML = '';
+    selectedUl.innerHTML = '';
     const itemListData = itemList.getItems();
-    const state = (this.#searchData.length ? this.#searchData : itemListData)
+    const SelectedItemListData = selectedItemList.getItems();
+    console.log(this.#searchData);
+    this.f(this.#searchData, itemListData, ul, itemCnt, searchBar, itemList);
+    this.f(this.#selectedSearchData, SelectedItemListData, selectedUl, selectedItemCnt, selectedSearchBar, selectedItemList);
+  }
+  f(searchData, listData, ul, itemCnt, searchBar, list) {
+    const state = (searchData.length ? searchData : listData)
       .map((item) => {
         if (!item) return;
-        const li = ul.appendChild(el('li', { appendChild: el('span', { innerHTML: item.title }), setAttribute: ['class', 'item'] }));
+        const li = ul.appendChild(
+          el('li', {
+            appendChild: el('span', { innerHTML: item.title }),
+            setAttribute: ['class', 'item'],
+          }),
+        );
         li.onclick = () => {
           item.toggle();
           this._render();
         };
         return item.state;
       })
-      .filter((item) => item).length;
-    itemCnt.innerHTML = `${state} / ${itemList.getItemsLength()}`;
+      .filter((item) => item);
+    itemCnt.innerHTML = `${state.length} / ${(searchData.length ? searchData : listData).length}`;
 
     searchBar.onkeyup = (e) => {
       const input = e.target.value.trim();
-      this.#searchData = itemList.search(input) ? itemList.search(input) : itemListData;
+      if (searchBar === this.selectedSearchBar) {
+        this.#selectedSearchData = list.search(input) ? list.search(input) : listData;
+      } else {
+        this.#searchData = list.search(input) ? list.search(input) : listData;
+      }
       this._render();
     };
   }
@@ -129,5 +156,5 @@ const ValidInfo = class {
   }
 };
 const data = new JsonData('/api/options');
-const renderer = new DomRenderer('#container');
+const renderer = new DomRenderer(['#container-avaliable', '#container-selected']);
 renderer.render(data);
