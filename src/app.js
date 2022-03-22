@@ -12,7 +12,10 @@ const Item = class {
     return this.#title;
   }
   toggle() {
-    this.#state = !this.#title;
+    this.#state = !this.#state;
+  }
+  get state() {
+    return this.#state;
   }
 };
 const ItemList = class {
@@ -51,14 +54,24 @@ const DomRenderer = class extends Renderer {
   #parent;
   constructor(parent) {
     super();
-    this.#parent = parent;
+    this.parent = parent;
+    this.ul = qs(`${this.parent} .item-list`);
+    this.itemCnt = qs(`${this.parent} .item-cnt`);
   }
   _render() {
-    const ul = qs(`${this.#parent} .item-list`);
+    const { ul, itemCnt, itemList } = this;
     ul.innerHTML = '';
-    this.itemList.forEach((item) =>
-      ul.appendChild(el('li', { appendChild: el('span', { innerHTML: item.title }), setAttribute: ['class', 'item'] })),
-    );
+    const state = itemList
+      .map((item) => {
+        const li = ul.appendChild(el('li', { appendChild: el('span', { innerHTML: item.title }), setAttribute: ['class', 'item'] }));
+        li.onclick = () => {
+          item.toggle();
+          this._render();
+        };
+        return item.state;
+      })
+      .filter((state) => state).length;
+    itemCnt.innerHTML = `${state} / ${itemList.length}`;
   }
 };
 
