@@ -95,6 +95,20 @@ const DomRenderer = class extends Renderer {
     this.selectedItemCnt = qs(`${this.selectedParent} .item-cnt`);
     this.selectedSearchBar = qs(`${this.selectedParent} .searchBar`);
 
+    const titleAv = qs('container-avaliable .container-title');
+    const titleInputAv = qs(`#avaliable`);
+    titleInputAv.onchange = (e) => {
+      const value = e.target.value;
+      titleAv.innerHTML = value;
+    };
+
+    const titleSe = qs('#container-selected .container-title');
+    const titleInputSe = qs(`#selected`);
+    titleInputSe.onchange = (e) => {
+      const value = e.target.value;
+      titleSe.innerHTML = value;
+    };
+
     const moveController = qs('#move-controller');
     moveController.onchange = (e) => {
       if (e.target.checked) {
