@@ -93,11 +93,13 @@ const DomRenderer = class extends Renderer {
   constructor(parent) {
     super();
     this.parentAvaliable = parent[0];
+    this.parentSection = qs(this.parentAvaliable);
     this.ul = qs(`${this.parentAvaliable} .item-list`);
     this.itemCnt = qs(`${this.parentAvaliable} .item-cnt`);
     this.searchBar = qs(`${this.parentAvaliable} .searchBar`);
 
     this.selectedParent = parent[1];
+    this.selectedParentSection = qs(this.selectedParent);
     this.selectedUl = qs(`${this.selectedParent} .item-list`);
     this.selectedItemCnt = qs(`${this.selectedParent} .item-cnt`);
     this.selectedSearchBar = qs(`${this.selectedParent} .searchBar`);
@@ -183,6 +185,12 @@ const DomRenderer = class extends Renderer {
         this._render();
       };
     });
+    qs('#size-width').onchange = (e) => {
+      [this.parentSection, this.selectedParentSection].forEach((section) => (section.style.width = `${e.target.value / 10}rem`));
+    };
+    qs('#size-height').onchange = (e) => {
+      [this.parentSection, this.selectedParentSection].forEach((section) => (section.style.height = `${e.target.value / 10}rem`));
+    };
   }
   _render() {
     const { ul, itemCnt, searchBar, selectedUl, selectedItemCnt, selectedSearchBar } = this;
@@ -198,7 +206,7 @@ const DomRenderer = class extends Renderer {
     const state = (searchData.length ? searchData : listData)
       .map((item) => {
         if (!item) return;
-        console.log(item);
+
         const li = ul.appendChild(
           el('li', {
             appendChild: el('span', { innerHTML: item.title }),
