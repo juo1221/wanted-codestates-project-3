@@ -109,6 +109,17 @@ const DomRenderer = class extends Renderer {
       titleSe.innerHTML = value;
     };
 
+    const searchController = qs('#search-controller');
+    searchController.onchange = (e) => {
+      if (!e.target.checked) {
+        this.searchBar.readOnly = true;
+        this.selectedSearchBar.readOnly = true;
+      } else {
+        this.searchBar.readOnly = false;
+        this.selectedSearchBar.readOnly = false;
+      }
+    };
+
     const moveController = qs('#move-controller');
     moveController.onchange = (e) => {
       if (e.target.checked) {
