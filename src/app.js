@@ -5,6 +5,7 @@ import { qs } from '@Utils/util';
 const Item = class {
   #title;
   #state = false;
+  #size = 'size-xs';
   constructor(title) {
     this.#title = title;
   }
@@ -25,6 +26,12 @@ const Item = class {
   }
   find() {
     return this.#state ? this : null;
+  }
+  set size(size) {
+    this.#size = size;
+  }
+  get size() {
+    return this.#size;
   }
 };
 const ItemList = class {
@@ -130,6 +137,7 @@ const DomRenderer = class extends Renderer {
     };
 
     const { itemList, selectedItemList } = this;
+
     const [resetBtn, mutliLeftBtn, multiRightBtn, leftBtn, rightBtn] = Array.from(document.querySelectorAll('.move-buttons .btn'));
     resetBtn.onclick = () => {
       itemList.clear();
@@ -168,6 +176,13 @@ const DomRenderer = class extends Renderer {
       });
       this._render();
     };
+
+    [qs('#size-s'), qs('#size-xs'), qs('#size-m')].forEach((input) => {
+      input.onchange = (e) => {
+        [itemList, selectedItemList].forEach((list) => list.getItems().forEach((el) => (el.size = input.id)));
+        this._render();
+      };
+    });
   }
   _render() {
     const { ul, itemCnt, searchBar, selectedUl, selectedItemCnt, selectedSearchBar } = this;
@@ -183,10 +198,11 @@ const DomRenderer = class extends Renderer {
     const state = (searchData.length ? searchData : listData)
       .map((item) => {
         if (!item) return;
+        console.log(item);
         const li = ul.appendChild(
           el('li', {
             appendChild: el('span', { innerHTML: item.title }),
-            setAttribute: ['class', 'item'],
+            setAttribute: ['class', `item ${item.size}`],
           }),
         );
         if (this.#isLocked) {
