@@ -82,6 +82,7 @@ const DomRenderer = class extends Renderer {
   #searchData = [];
   #selectedData = [];
   #selectedSearchData = [];
+  #isLocked = true;
   constructor(parent) {
     super();
     this.parentAvaliable = parent[0];
@@ -93,6 +94,16 @@ const DomRenderer = class extends Renderer {
     this.selectedUl = qs(`${this.selectedParent} .item-list`);
     this.selectedItemCnt = qs(`${this.selectedParent} .item-cnt`);
     this.selectedSearchBar = qs(`${this.selectedParent} .searchBar`);
+
+    const moveController = qs('#move-controller');
+    moveController.onchange = (e) => {
+      if (e.target.checked) {
+        this.#isLocked = true;
+      } else {
+        this.#isLocked = false;
+      }
+    };
+
     const { itemList, selectedItemList } = this;
     const [resetBtn, mutliLeftBtn, multiRightBtn, leftBtn, rightBtn] = Array.from(document.querySelectorAll('.move-buttons .btn'));
     resetBtn.onclick = () => {
@@ -153,10 +164,26 @@ const DomRenderer = class extends Renderer {
             setAttribute: ['class', 'item'],
           }),
         );
-        li.onclick = () => {
-          item.toggle();
-          this._render();
-        };
+        if (this.#isLocked) {
+          li.onclick = (e) => {
+            const findedList = list.find();
+            if (!findedList.some((itm) => itm === item)) list.find().forEach((item) => item.resetState());
+            item.toggle();
+            this._render();
+          };
+        } else {
+          li.onclick = (e) => {
+            if (e.metaKey || e.ctrlKey) {
+              item.toggle();
+            } else {
+              const findedList = list.find();
+              if (!findedList.some((itm) => itm === item)) list.find().forEach((item) => item.resetState());
+              item.toggle();
+            }
+            this._render();
+          };
+        }
+
         return item.state;
       })
       .filter((item) => item);

@@ -15,16 +15,68 @@
     </section>
     <div class="move-buttons">
       <button class="btn btn-reset">reset</button>
-      <button class="btn btn-multileft"><<</button>
-      <button class="btn btn-multiright">>></button>
-      <button class="btn btn-signleleft"><</button>
-      <button class="btn btn-signleright">></button>
+      <button class="btn btn-multi-left"><<</button>
+      <button class="btn btn-multi-right">>></button>
+      <button class="btn btn-single-left"><</button>
+      <button class="btn btn-single-right">></button>
     </div>
     <section id="container-selected">
       <input class="searchBar" type="text" placeholder="search" autocomplete="off" />
       <h1 class="container-title">selected options</h1>
       <ul class="item-list"></ul>
       <span class="item-cnt"></span>
+    </section>
+    <section class="setting">
+      <button class="btn btn-setting">세팅</button>
+      <div class="setting-title">
+        <p>타이틀</p>
+        <input type="checkbox" name="" checked="true" id="" />
+        <div>
+          <input id="avaliable" type="text" placeholder="available options" />
+          <input id="selected" type="text" placeholder="selected options" />
+        </div>
+      </div>
+      <div class="setting-search">
+        <p>검색</p>
+        <input id="search-controller" type="checkbox" checked="true" name="" id="" />
+      </div>
+      <div class="setting-move">
+        <p>하나씩만 옮기기</p>
+        <input id="move-controller" type="checkbox" checked="true" name="" id="" />
+      </div>
+      <div class="setting-item-size">
+        <p>아이템 크기</p>
+        <div>
+          <div>
+            <p>xs</p>
+            <input type="radio" name="" id="" />
+          </div>
+          <div>
+            <p>s</p>
+            <input type="radio" name="" id="" />
+          </div>
+          <div>
+            <p>m</p>
+            <input type="radio" name="" id="" />
+          </div>
+        </div>
+      </div>
+      <div class="setting-window-size">
+        <div>
+          <p>가로</p>
+          <div>
+            <input type="text" name="" id="" />
+            px
+          </div>
+        </div>
+        <div>
+          <p>세로</p>
+          <div>
+            <input type="text" name="" id="" />
+            px
+          </div>
+        </div>
+      </div>
     </section>
   </body>
 </html>
