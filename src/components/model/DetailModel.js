@@ -1,3 +1,5 @@
+import Model from '@Components/model/Model';
+
 const DetailModel = class extends Model {
   #id;
   #name;

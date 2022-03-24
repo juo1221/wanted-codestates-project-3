@@ -1,5 +1,5 @@
-import override from '@Util/util';
-import singleton from '@Util/util';
+import { override } from '@Utils/util';
+import singleton from '@Components/Single';
 
 const Controller = class {
   constructor(isSingleton) {

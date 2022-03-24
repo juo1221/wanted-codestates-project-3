@@ -1,8 +1,8 @@
 import singleton from '@Components/Single';
-import DetailModel from '@Components/models/DetailModel';
+import DetailModel from '@Components/model/DetailModel';
 import JsonData from '@Components/data/JsonData';
 import Data from '@Components/data/Data';
-import Model from '@Components/models/Model';
+import Model from '@Components/model/Model';
 
 const HomeModel = class extends Model {
   #data = new JsonData('/api/options');
@@ -11,8 +11,10 @@ const HomeModel = class extends Model {
     super(isSingleton);
     if (this.#list) return;
     if (!this.#data || !(this.#data instanceof Data)) err(`invalid data : ${this.#data}`);
-    const { datas } = await this.#data.getData();
-    datas.forEach(({ id, name, emoji }) => this.#list.push(new DetailModel(id, name, emoji)));
+    (async () => {
+      const { datas } = await this.#data.getData();
+      datas.forEach(({ id, name, emoji }) => this.#list.push(new DetailModel(id, name, emoji)));
+    })();
   }
   add(...list) {
     this.#list.push(...list);
@@ -31,3 +33,5 @@ const HomeModel = class extends Model {
     return res;
   }
 };
+
+export default HomeModel;

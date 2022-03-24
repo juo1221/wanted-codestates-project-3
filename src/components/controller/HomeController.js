@@ -1,5 +1,7 @@
-import singleton from '@Util/util';
+import singleton from '@Components/Single';
 import Controller from '@Components/controller/Controller';
+import HomeModel from '@Components/model/HomeModel';
+import HomeView from '@Components/view/HomeView';
 
 const Home = class extends Controller {
   constructor(isSingleton = false) {
@@ -17,22 +19,11 @@ const Home = class extends Controller {
   $moveRight() {}
   base() {
     const model = new HomeModel(true);
-    const view = new HomeBaseView(this, true);
+    const view = new HomeView(this, true);
     model.addController(this);
     return view.render(model);
   }
-  listen(model = err('')) {
-    switch (true) {
-      case is(model, HomeModel):
-        this.$list();
-        break;
-      case is(model, HomeDetailModel):
-        this.$detail(model.id);
-        break;
-      default:
-        err(`invalid model : ${model}`);
-    }
-  }
+  listen(model = err('')) {}
 };
 
 export default Home;

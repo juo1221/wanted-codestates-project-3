@@ -13,3 +13,5 @@ const View = class {
     return this.#controller;
   }
 };
+
+export default View;

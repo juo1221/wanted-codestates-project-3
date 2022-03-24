@@ -1,14 +1,17 @@
-import singleton from '@Components/singleton';
+import singleton from '@Components/Single';
 import HomeModel from '@Components/model/HomeModel';
-import append from '@Util/util';
-import appendDep from '@Util/util';
-import prop from '@Util/util';
+import View from '@Components/view/View';
+import { append } from '@Utils/util';
+import { prop } from '@Utils/util';
+import { is } from '@Utils/util';
+import { el } from '@Utils/util';
 
-const HomeBaseView = class extends View {
+const HomeView = class extends View {
   constructor(controller, isSingleton) {
     super(controller, isSingleton);
   }
   render(model = err(`no model : ${model} `)) {
+    console.log(model);
     if (!is(model, HomeModel)) err(`invalid model : ${model}`);
     const { controller: ctrl } = this;
     return append(
@@ -71,16 +74,12 @@ const HomeBaseView = class extends View {
           ),
         ),
         append(
-          el('div'),
-          'class',
-          'setting-search',
+          el('div', 'class', 'setting-search'),
           el('p', 'innerHTML', '검색'),
           el('input', 'type', 'checkbox', 'id', 'search-controller', 'checked', 'true'),
         ),
         append(
-          el('div'),
-          'class',
-          'setting-move',
+          el('div', 'class', 'setting-move'),
           el('p', 'innerHTML', '하나씩만 옮기기'),
           el('input', 'type', 'checkbox', 'id', 'move-controller', 'checked', 'true'),
         ),
@@ -103,3 +102,5 @@ const HomeBaseView = class extends View {
     );
   }
 };
+
+export default HomeView;
