@@ -1,6 +1,7 @@
 import { err } from '@Utils/util';
+import { append } from '@Utils/util';
 import { el } from '@Utils/util';
-import { qs } from '@Utils/util';
+import { sel } from '@Utils/util';
 
 import Renderer from '@Components/render/Renderer';
 
@@ -13,32 +14,32 @@ const DomRenderer = class extends Renderer {
   constructor(parent) {
     super();
     this.parentAvaliable = parent[0];
-    this.parentSection = qs(this.parentAvaliable);
-    this.ul = qs(`${this.parentAvaliable} .item-list`);
-    this.itemCnt = qs(`${this.parentAvaliable} .item-cnt`);
-    this.searchBar = qs(`${this.parentAvaliable} .searchBar`);
+    this.parentSection = sel(this.parentAvaliable);
+    this.ul = sel(`${this.parentAvaliable} .item-list`);
+    this.itemCnt = sel(`${this.parentAvaliable} .item-cnt`);
+    this.searchBar = sel(`${this.parentAvaliable} .searchBar`);
 
     this.selectedParent = parent[1];
-    this.selectedParentSection = qs(this.selectedParent);
-    this.selectedUl = qs(`${this.selectedParent} .item-list`);
-    this.selectedItemCnt = qs(`${this.selectedParent} .item-cnt`);
-    this.selectedSearchBar = qs(`${this.selectedParent} .searchBar`);
+    this.selectedParentSection = sel(this.selectedParent);
+    this.selectedUl = sel(`${this.selectedParent} .item-list`);
+    this.selectedItemCnt = sel(`${this.selectedParent} .item-cnt`);
+    this.selectedSearchBar = sel(`${this.selectedParent} .searchBar`);
 
-    const titleAv = qs('container-avaliable .container-title');
-    const titleInputAv = qs(`#avaliable`);
+    const titleAv = sel('container-avaliable .container-title');
+    const titleInputAv = sel(`#avaliable`);
     titleInputAv.onchange = (e) => {
       const value = e.target.value;
       titleAv.innerHTML = value;
     };
 
-    const titleSe = qs('#container-selected .container-title');
-    const titleInputSe = qs(`#selected`);
+    const titleSe = sel('#container-selected .container-title');
+    const titleInputSe = sel(`#selected`);
     titleInputSe.onchange = (e) => {
       const value = e.target.value;
       titleSe.innerHTML = value;
     };
 
-    const searchController = qs('#search-controller');
+    const searchController = sel('#search-controller');
     searchController.onchange = (e) => {
       if (!e.target.checked) {
         this.searchBar.readOnly = true;
@@ -49,7 +50,7 @@ const DomRenderer = class extends Renderer {
       }
     };
 
-    const moveController = qs('#move-controller');
+    const moveController = sel('#move-controller');
     moveController.onchange = (e) => {
       if (e.target.checked) {
         this.#isLocked = true;
@@ -99,16 +100,16 @@ const DomRenderer = class extends Renderer {
       this._render();
     };
 
-    [qs('#size-s'), qs('#size-xs'), qs('#size-m')].forEach((input) => {
+    [sel('#size-s'), sel('#size-xs'), sel('#size-m')].forEach((input) => {
       input.onchange = (e) => {
         [itemList, selectedItemList].forEach((list) => list.getItems().forEach((el) => (el.size = input.id)));
         this._render();
       };
     });
-    qs('#size-width').onchange = (e) => {
+    sel('#size-width').onchange = (e) => {
       [this.parentSection, this.selectedParentSection].forEach((section) => (section.style.width = `${e.target.value / 10}rem`));
     };
-    qs('#size-height').onchange = (e) => {
+    sel('#size-height').onchange = (e) => {
       [this.parentSection, this.selectedParentSection].forEach((section) => (section.style.height = `${e.target.value / 10}rem`));
     };
   }
@@ -126,13 +127,7 @@ const DomRenderer = class extends Renderer {
     const state = (searchData.length ? searchData : listData)
       .map((item) => {
         if (!item) return;
-
-        const li = ul.appendChild(
-          el('li', {
-            appendChild: el('span', { innerHTML: item.title }),
-            setAttribute: ['class', `item ${item.size}`],
-          }),
-        );
+        const li = ul.appendChild(append(el('li'), el('span', 'innerHTML', item.title, 'className', `item ${item.size}`)));
         if (this.#isLocked) {
           li.onclick = (e) => {
             const findedList = list.find();
