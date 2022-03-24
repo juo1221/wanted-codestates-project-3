@@ -57,50 +57,49 @@ const HomeBaseView = class extends View {
         ),
         el('span', 'class', 'item-cnt', 'innerHTML', '0 / 0'),
       ),
-      append(),
+      append(
+        el('section', 'class', 'setting'),
+        el('button', 'class', 'btn btn-settin', 'innerHTML', '세팅'),
+        append(
+          el('div', 'class', 'setting-title'),
+          el('p', 'innerHTML', '타이틀'),
+          el('input', 'type', 'checkbox', 'name', 'checked', 'true'),
+          append(
+            el('div'),
+            el('input', 'type', 'text', 'id', 'avaliable', 'placeholder', 'available options'),
+            el('input', 'type', 'text', 'id', 'selected', 'placeholder', 'selected options'),
+          ),
+        ),
+        append(
+          el('div'),
+          'class',
+          'setting-search',
+          el('p', 'innerHTML', '검색'),
+          el('input', 'type', 'checkbox', 'id', 'search-controller', 'checked', 'true'),
+        ),
+        append(
+          el('div'),
+          'class',
+          'setting-move',
+          el('p', 'innerHTML', '하나씩만 옮기기'),
+          el('input', 'type', 'checkbox', 'id', 'move-controller', 'checked', 'true'),
+        ),
+        append(
+          el('div', 'class', 'setting-item-size'),
+          el('p', 'innerHTML', '아이템 크기'),
+          append(
+            el('div'),
+            append(el('div'), append(el('p', 'innerHTML', 'XS'), el('input', 'type', 'radio', 'id', 'size-xs', 'checked', 'true', 'name', 'size'))),
+            append(el('div'), append(el('p', 'innerHTML', 'S'), el('input', 'type', 'radio', 'id', 'size-s', 'name', 'size'))),
+            append(el('div'), append(el('p', 'innerHTML', 'M'), el('input', 'type', 'radio', 'id', 'size-m', 'name', 'size'))),
+          ),
+        ),
+        append(
+          el('div', 'class', 'setting-window-size'),
+          append(el('div'), el('p', 'innerHTML', '가로'), append(el('div'), el('input', 'type', 'text', 'id', 'size-width', 'value', '300'))),
+          append(el('div'), el('p', 'innerHTML', '세로'), append(el('div'), el('input', 'type', 'text', 'id', 'size-height', 'value', '400'))),
+        ),
+      ),
     );
   }
 };
-append(
-  el('section', 'class', 'setting'),
-  el('button', 'class', 'btn btn-settin', 'innerHTML', '세팅'),
-  append(
-    el('div', 'class', 'setting-title'),
-    el('p', 'innerHTML', '타이틀'),
-    el('input', 'type', 'checkbox', 'name', 'checked', 'true'),
-    append(
-      el('div'),
-      el('input', 'type', 'text', 'id', 'avaliable', 'placeholder', 'available options'),
-      el('input', 'type', 'text', 'id', 'selected', 'placeholder', 'selected options'),
-    ),
-  ),
-  append(
-    el('div'),
-    'class',
-    'setting-search',
-    el('p', 'innerHTML', '검색'),
-    el('input', 'type', 'checkbox', 'id', 'search-controller', 'checked', 'true'),
-  ),
-  append(
-    el('div'),
-    'class',
-    'setting-move',
-    el('p', 'innerHTML', '하나씩만 옮기기'),
-    el('input', 'type', 'checkbox', 'id', 'move-controller', 'checked', 'true'),
-  ),
-  append(
-    el('div', 'class', 'setting-item-size'),
-    el('p', 'innerHTML', '아이템 크기'),
-    append(
-      el('div'),
-      append(el('div'), append(el('p', 'innerHTML', 'XS'), el('input', 'type', 'radio', 'id', 'size-xs', 'checked', 'true', 'name', 'size'))),
-      append(el('div'), append(el('p', 'innerHTML', 'S'), el('input', 'type', 'radio', 'id', 'size-s', 'name', 'size'))),
-      append(el('div'), append(el('p', 'innerHTML', 'M'), el('input', 'type', 'radio', 'id', 'size-m', 'name', 'size'))),
-    ),
-  ),
-  append(
-    el('div', 'class', 'setting-window-size'),
-    append(el('div'), el('p', 'innerHTML', '가로'), append(el('div'), el('input', 'type', 'text', 'id', 'size-width', 'value', '300'))),
-    append(el('div'), el('p', 'innerHTML', '세로'), append(el('div'), el('input', 'type', 'text', 'id', 'size-height', 'value', '400'))),
-  ),
-);
