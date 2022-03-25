@@ -1,6 +1,7 @@
 import './app.scss';
 import HomeController from '@Components/controller/HomeController';
 import HomeModel from '@Components/model/HomeModel';
+import SelectedHomeModel from '@Components/model/SelectedHomeModel';
 import JsonData from '@Components/data/JsonData';
 import { append } from '@Utils/util';
 import { el } from '@Utils/util';
@@ -36,8 +37,10 @@ const app = new App('#main');
 
 (async () => {
   const homeModel = new HomeModel(true);
+  const selectedHomeModel = new SelectedHomeModel(true);
   homeModel.data = new JsonData('./data/mockup.json');
-  console.log(homeModel);
+  selectedHomeModel.data = new JsonData('./data/mockup.json');
+
   await homeModel.loadData();
   app.add('home', (_) => new HomeController(true));
   app.route('home');

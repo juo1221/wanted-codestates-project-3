@@ -23,6 +23,13 @@ const Home = class extends Controller {
     model.addController(this);
     model.search(target, smodelList);
   }
+  $searchOpt(input) {
+    const target = input.value.trim();
+    const modelList = new HomeModel(true).list;
+    const model = new SelectedHomeModel(true);
+    model.addController(this);
+    model.search(target, modelList);
+  }
   $select(id) {
     const model = new HomeModel(true).get(id);
     model.addController(this);

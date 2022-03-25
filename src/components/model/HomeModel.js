@@ -16,6 +16,7 @@ const HomeModel = class extends Model {
       if (!this._data || !(this._data instanceof Data)) err(`invalid data : ${this._data}`);
       const { datas } = await this._data.getData();
       prop(this, { _list: datas.map(({ id, name, emoji }) => new DetailModel(id, name, emoji)) });
+      // console.log(this._list);
       res('done');
     });
   }
@@ -26,18 +27,53 @@ const HomeModel = class extends Model {
   }
   remove(...list) {
     for (const li of list) if (!is(li, DetailModel)) err(`invalid list : ${list}`);
-    if (!list.every((targetLi) => this._list.some((originLi, idx) => originLi.id === targetLi.id && this._list.splice(idx, 1))))
-      err(`invalid list : ${list}`);
+    this._list.sort((a, b) => a.id - b.id);
+    list.sort((a, b) => b.id - a.id);
+    list.forEach((li) => {
+      if (
+        !this._list.some((originLi, idx) => {
+          if (originLi.id === li.id) {
+            this._list.splice(idx, 1);
+            return true;
+          }
+        })
+      )
+        err(`invalid list : ${list}`);
+    });
     this.notify();
   }
   async search(input, smodelList) {
     await this.loadData();
-    if (!smodelList.every((targetLi) => this._list.some((originLi, idx) => originLi.id === targetLi.id && this._list.splice(idx, 1))))
-      err(`invalid list : ${smodelList}`);
+    this._list.sort((a, b) => a.id - b.id);
+    smodelList.sort((a, b) => b.id - a.id);
+    smodelList.forEach((li) => {
+      if (
+        !this._list.some((originLi, idx) => {
+          if (originLi.id === li.id) {
+            this._list.splice(idx, 1);
+            return true;
+          }
+        })
+      )
+        err(`invalid smodelList : ${smodelList}`);
+    });
     prop(this, { _list: this._list });
     const filtered = input === '' ? this._list : this._list.filter((li) => li.search(input));
-    prop(this, { _list: filtered.length ? filtered : [{ emoji: '정보', name: '없음' }] });
+    prop(this, { _list: filtered.length ? filtered : [{ id: 9999, emoji: '💩', name: 'No Data!' }] });
     this.notify();
+
+    /* 0.5초 뒤 경고 문자 삭제 */
+    if (this._list[0].id === 9999) {
+      console.log('no!');
+      await (() =>
+        new Promise((res, rej) => {
+          setTimeout(() => {
+            prop(this, { _list: [] });
+            this.notify();
+            res('done');
+          }, 500);
+        }))();
+    }
   }
   reset() {
     prop(this, { _list: this._list.map((li) => (li.reset(), li)) });
@@ -52,7 +88,7 @@ const HomeModel = class extends Model {
   }
   get(id) {
     let res;
-    console.log(this._list);
+    // console.log(this._list);
     if (
       !this._list.some((li) => {
         return li.id == id && (res = li);

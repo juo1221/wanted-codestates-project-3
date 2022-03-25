@@ -49,8 +49,8 @@ const HomeView = class extends View {
       append(
         el('section', 'id', 'container-selected'),
         el('input', 'className', 'searchBar', 'type', 'text', 'placeholder', 'search', 'autocomplete', 'off', 'addEventListener', [
-          'keyup',
-          (e) => ctrl.$search(e.target.value.trim()),
+          'change',
+          (e) => ctrl.$searchOpt(e.target),
         ]),
         el('h1', 'className', 'container-title', 'innerHTML', 'selected options'),
         append(
