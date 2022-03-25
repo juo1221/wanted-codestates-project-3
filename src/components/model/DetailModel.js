@@ -27,6 +27,9 @@ const DetailModel = class extends Model {
   get state() {
     return this.#state;
   }
+  reset() {
+    this.#state = false;
+  }
   search(input) {
     return this.#name.includes(input) ? this : null;
   }

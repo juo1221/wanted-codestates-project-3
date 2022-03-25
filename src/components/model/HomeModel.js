@@ -30,8 +30,9 @@ const HomeModel = class extends Model {
     prop(this, { _searchList: this.list.filter((li) => li.search(input)) });
     this.notify();
   }
-  get list() {
-    return this._list && [...this._list];
+  reset() {
+    prop(this, { _searchList: this.list.map((li) => (li.reset(), li)) });
+    this.notify();
   }
   get(id) {
     let res;
@@ -42,6 +43,9 @@ const HomeModel = class extends Model {
     )
       err(`invalid id : ${id}`);
     return res;
+  }
+  get list() {
+    return this._list && [...this._list];
   }
   get length() {
     return this._list.length;

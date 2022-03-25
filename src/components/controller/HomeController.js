@@ -26,7 +26,8 @@ const Home = class extends Controller {
     model.toggle();
   }
   $reset() {
-    console.log(1);
+    const model = new HomeModel(true);
+    model.reset();
   }
   $moveLeftAll() {}
   $moveRightAll() {}
