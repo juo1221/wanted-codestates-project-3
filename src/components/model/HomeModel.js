@@ -9,12 +9,14 @@ const HomeModel = class extends Model {
   #list = [];
   constructor(isSingleton) {
     super(isSingleton);
-    if (this.#list) return;
-    if (!this.#data || !(this.#data instanceof Data)) err(`invalid data : ${this.#data}`);
-    (async () => {
+  }
+  loadData() {
+    return new Promise(async (res, rej) => {
+      if (!this.#data || !(this.#data instanceof Data)) err(`invalid data : ${this.#data}`);
       const { datas } = await this.#data.getData();
       datas.forEach(({ id, name, emoji }) => this.#list.push(new DetailModel(id, name, emoji)));
-    })();
+      res('done');
+    });
   }
   add(...list) {
     this.#list.push(...list);
@@ -22,7 +24,7 @@ const HomeModel = class extends Model {
   remove(id) {
     let result;
     if (!this.#list.some((li, idx) => li.id === id && this.#list.splice(idx, 1))) err('');
-    this.notify();
+    this.#list.notify();
   }
   get list() {
     return [...this.#list];

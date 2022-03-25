@@ -7,6 +7,7 @@ const Home = class extends Controller {
   constructor(isSingleton = false) {
     super(isSingleton);
   }
+
   $list() {
     app.route('home');
   }
@@ -17,10 +18,12 @@ const Home = class extends Controller {
   $moveRightAll() {}
   $moveLeft() {}
   $moveRight() {}
-  base() {
+
+  async base() {
     const model = new HomeModel(true);
     const view = new HomeView(this, true);
     model.addController(this);
+    model.list.length || (await model.loadData());
     return view.render(model);
   }
   listen(model = err('')) {}

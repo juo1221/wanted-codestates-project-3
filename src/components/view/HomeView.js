@@ -11,60 +11,59 @@ const HomeView = class extends View {
     super(controller, isSingleton);
   }
   render(model = err(`no model : ${model} `)) {
-    console.log(model);
     if (!is(model, HomeModel)) err(`invalid model : ${model}`);
     const { controller: ctrl } = this;
     return append(
       el('div'),
       append(
         el('section', 'id', 'container-avaliable'),
-        el('input', 'class', 'searchBar', 'type', 'text', 'placeholder', 'search', 'autocomplete', 'off', 'addEventListener', [
+        el('input', 'className', 'searchBar', 'type', 'text', 'placeholder', 'search', 'autocomplete', 'off', 'addEventListener', [
           'keyup',
           (e) => ctrl.$search(e.target.value.trim()),
         ]),
-        el('h1', 'class', 'container-title', 'innerHTML', 'avaliable options'),
+        el('h1', 'className', 'container-title', 'innerHTML', 'avaliable options'),
         append(
-          el('ul', 'class', 'item-container'),
+          el('ul', 'className', 'item-container'),
           ...model.list.map((model) =>
             append(
-              el('li', 'class', `item ${model.size}`, 'addEventListener', ['click', () => ctrl.$select()]),
-              el('span', 'innerHTML', `${model.emoji} ${model.title}`),
+              el('li', 'className', `item ${model.size}`, 'addEventListener', ['click', () => ctrl.$select()]),
+              el('span', 'innerHTML', `${model.emoji} ${model.name}`),
             ),
           ),
         ),
-        el('span', 'class', 'item-cnt', 'innerHTML', '0 / 0'),
+        el('span', 'className', 'item-cnt', 'innerHTML', '0 / 0'),
       ),
       append(
-        el('div', 'class', 'move-buttons'),
-        el('button', 'class', 'btn btn-reset', 'innerHTML', 'reset', 'addEventListener', ['click', () => ctrl.$reset()]),
-        el('button', 'class', 'btn btn-multi-left', 'innerHTML', '<<', 'addEventListener', ['click', () => ctrl.$moveLeftAll()]),
-        el('button', 'class', 'btn btn-multi-right', 'innerHTML', '>>', 'addEventListener', ['click', () => ctrl.$moveRightAll()]),
-        el('button', 'class', 'btn btn-single-left', 'innerHTML', '<', 'addEventListener', ['click', () => ctrl.$moveLeft()]),
-        el('button', 'class', 'btn btn-single-right', 'innerHTML', '>', 'addEventListener', ['click', () => ctrl.$moveRight()]),
+        el('div', 'className', 'move-buttons'),
+        el('button', 'className', 'btn btn-reset', 'innerHTML', 'reset', 'addEventListener', ['click', () => ctrl.$reset()]),
+        el('button', 'className', 'btn btn-multi-left', 'innerHTML', '<<', 'addEventListener', ['click', () => ctrl.$moveLeftAll()]),
+        el('button', 'className', 'btn btn-multi-right', 'innerHTML', '>>', 'addEventListener', ['click', () => ctrl.$moveRightAll()]),
+        el('button', 'className', 'btn btn-single-left', 'innerHTML', '<', 'addEventListener', ['click', () => ctrl.$moveLeft()]),
+        el('button', 'className', 'btn btn-single-right', 'innerHTML', '>', 'addEventListener', ['click', () => ctrl.$moveRight()]),
       ),
       append(
         el('section', 'id', 'container-selected'),
-        el('input', 'class', 'searchBar', 'type', 'text', 'placeholder', 'search', 'autocomplete', 'off', 'addEventListener', [
+        el('input', 'className', 'searchBar', 'type', 'text', 'placeholder', 'search', 'autocomplete', 'off', 'addEventListener', [
           'keyup',
           (e) => ctrl.$search(e.target.value.trim()),
         ]),
-        el('h1', 'class', 'container-title', 'innerHTML', 'selected options'),
+        el('h1', 'className', 'container-title', 'innerHTML', 'selected options'),
         append(
-          el('ul', 'class', 'item-container'),
+          el('ul', 'className', 'item-container'),
           ...model.list.map((model) =>
             append(
-              el('li', 'class', `item ${model.size}`, 'addEventListener', ['click', () => ctrl.$select()]),
-              el('span', 'innerHTML', `${model.emoji} ${model.title}`),
+              el('li', 'className', `item ${model.size}`, 'addEventListener', ['click', () => ctrl.$select()]),
+              el('span', 'innerHTML', `${model.emoji} ${model.name}`),
             ),
           ),
         ),
-        el('span', 'class', 'item-cnt', 'innerHTML', '0 / 0'),
+        el('span', 'className', 'item-cnt', 'innerHTML', '0 / 0'),
       ),
       append(
-        el('section', 'class', 'setting'),
-        el('button', 'class', 'btn btn-settin', 'innerHTML', '세팅'),
+        el('section', 'className', 'setting'),
+        el('button', 'className', 'btn btn-settin', 'innerHTML', '세팅'),
         append(
-          el('div', 'class', 'setting-title'),
+          el('div', 'className', 'setting-title'),
           el('p', 'innerHTML', '타이틀'),
           el('input', 'type', 'checkbox', 'name', 'checked', 'true'),
           append(
@@ -74,17 +73,17 @@ const HomeView = class extends View {
           ),
         ),
         append(
-          el('div', 'class', 'setting-search'),
+          el('div', 'className', 'setting-search'),
           el('p', 'innerHTML', '검색'),
           el('input', 'type', 'checkbox', 'id', 'search-controller', 'checked', 'true'),
         ),
         append(
-          el('div', 'class', 'setting-move'),
+          el('div', 'className', 'setting-move'),
           el('p', 'innerHTML', '하나씩만 옮기기'),
           el('input', 'type', 'checkbox', 'id', 'move-controller', 'checked', 'true'),
         ),
         append(
-          el('div', 'class', 'setting-item-size'),
+          el('div', 'className', 'setting-item-size'),
           el('p', 'innerHTML', '아이템 크기'),
           append(
             el('div'),
@@ -94,7 +93,7 @@ const HomeView = class extends View {
           ),
         ),
         append(
-          el('div', 'class', 'setting-window-size'),
+          el('div', 'className', 'setting-window-size'),
           append(el('div'), el('p', 'innerHTML', '가로'), append(el('div'), el('input', 'type', 'text', 'id', 'size-width', 'value', '300'))),
           append(el('div'), el('p', 'innerHTML', '세로'), append(el('div'), el('input', 'type', 'text', 'id', 'size-height', 'value', '400'))),
         ),
