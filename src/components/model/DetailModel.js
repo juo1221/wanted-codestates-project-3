@@ -27,6 +27,9 @@ const DetailModel = class extends Model {
   get state() {
     return this.#state;
   }
+  find() {
+    return this.#state === true ? this : null;
+  }
   reset() {
     this.#state = false;
   }

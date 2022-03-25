@@ -19,12 +19,14 @@ const HomeModel = class extends Model {
     });
   }
   add(...list) {
-    this._list.push(...list);
-  }
-  remove(id) {
-    let result;
-    if (!this._list.some((li, idx) => li.id === id && this._list.splice(idx, 1))) err('');
+    if (!this._list) this._list = [];
+    (this._list.push(...list), this._list).forEach((li) => li.reset());
     this.notify();
+  }
+  remove(...list) {
+    let result;
+    if (!list.every((targetLi) => this._list.some((originLi, idx) => originLi.id === targetLi.id && this._list.splice(idx, 1))))
+      err(`invalid list : ${list}`);
   }
   search(input) {
     prop(this, { _searchList: this.list.filter((li) => li.search(input)) });
@@ -33,6 +35,9 @@ const HomeModel = class extends Model {
   reset() {
     prop(this, { _searchList: this.list.map((li) => (li.reset(), li)) });
     this.notify();
+  }
+  find() {
+    return this.list.filter((li) => li.find());
   }
   get(id) {
     let res;
@@ -45,10 +50,10 @@ const HomeModel = class extends Model {
     return res;
   }
   get list() {
-    return this._list && [...this._list];
+    return this._list ? [...this._list] : [];
   }
   get length() {
-    return this._list.length;
+    return this._list ? this._list.length : 0;
   }
   set data(data) {
     this._data = data;

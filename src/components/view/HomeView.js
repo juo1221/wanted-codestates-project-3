@@ -6,13 +6,17 @@ import { prop } from '@Utils/util';
 import { is } from '@Utils/util';
 import { el } from '@Utils/util';
 import { sel } from '@Utils/util';
+import { err } from '@Utils/util';
 
 const HomeView = class extends View {
   constructor(controller, isSingleton) {
     super(controller, isSingleton);
   }
-  render(model = err(`no model : ${model} `)) {
-    if (!is(model, HomeModel)) err(`invalid model : ${model}`);
+  render(...model) {
+    const hmodel = model[0];
+    const smodel = model[1];
+    if (!is(hmodel, HomeModel)) err(`invalid model : ${hmodel}`);
+    if (!is(smodel, HomeModel)) err(`invalid model : ${smodel}`);
     const { controller: ctrl } = this;
     return append(
       el('div'),
@@ -25,14 +29,14 @@ const HomeView = class extends View {
         el('h1', 'className', 'container-title', 'innerHTML', 'avaliable options'),
         append(
           el('ul', 'className', 'item-container'),
-          ...(model.searchList ?? model.list).map((li) =>
+          ...(hmodel.searchList ?? hmodel.list).map((li) =>
             append(
               el('li', 'className', `item ${li.size}`, 'addEventListener', ['click', () => ctrl.$select(li.id)]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),
             ),
           ),
         ),
-        el('span', 'className', 'item-cnt', 'innerHTML', `${model.totalClickedCnt} / ${model.length}`),
+        el('span', 'className', 'item-cnt', 'innerHTML', `${hmodel.totalClickedCnt} / ${hmodel.length}`),
       ),
       append(
         el('div', 'className', 'move-buttons'),
@@ -40,7 +44,7 @@ const HomeView = class extends View {
         el('button', 'className', 'btn btn-multi-left', 'innerHTML', '<<', 'addEventListener', ['click', () => ctrl.$moveLeftAll()]),
         el('button', 'className', 'btn btn-multi-right', 'innerHTML', '>>', 'addEventListener', ['click', () => ctrl.$moveRightAll()]),
         el('button', 'className', 'btn btn-single-left', 'innerHTML', '<', 'addEventListener', ['click', () => ctrl.$moveLeft()]),
-        el('button', 'className', 'btn btn-single-right', 'innerHTML', '>', 'addEventListener', ['click', () => ctrl.$moveRight()]),
+        el('button', 'className', 'btn btn-single-right', 'innerHTML', '>', 'addEventListener', ['click', (e) => ctrl.$moveRight()]),
       ),
       append(
         el('section', 'id', 'container-selected'),
@@ -51,14 +55,14 @@ const HomeView = class extends View {
         el('h1', 'className', 'container-title', 'innerHTML', 'selected options'),
         append(
           el('ul', 'className', 'item-container'),
-          ...model.list.map((model) =>
-            append(
-              el('li', 'className', `item ${model.size}`, 'addEventListener', ['click', () => ctrl.$select()]),
-              el('span', 'innerHTML', `${model.emoji} ${model.name}`),
-            ),
-          ),
+          ...(smodel.searchList || smodel.list).map((li) => {
+            return append(
+              el('li', 'className', `item ${li.size}`, 'addEventListener', ['click', () => ctrl.$select(li.id)]),
+              el('span', 'innerHTML', `${li.emoji} ${li.name}`),
+            );
+          }),
         ),
-        el('span', 'className', 'item-cnt', 'innerHTML', '0 / 0'),
+        el('span', 'className', 'item-cnt', 'innerHTML', `${smodel.totalClickedCnt} / ${smodel.length}`),
       ),
       append(
         el('section', 'className', 'setting'),

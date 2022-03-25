@@ -3,6 +3,8 @@ import Controller from '@Components/controller/Controller';
 import HomeModel from '@Components/model/HomeModel';
 import DetailModel from '@Components/model/DetailModel';
 import HomeView from '@Components/view/HomeView';
+import SelectedHomeModel from '@Components/model/SelectedHomeModel';
+import SelectedDetailModel from '@Components/model/SelectedDetailModel';
 import { is } from '@Utils/util';
 import app from '../../app';
 import { setTimeout } from 'core-js';
@@ -32,16 +34,24 @@ const Home = class extends Controller {
   $moveLeftAll() {}
   $moveRightAll() {}
   $moveLeft() {}
-  $moveRight() {}
+  $moveRight() {
+    const model = new HomeModel(true);
+    const smodel = new SelectedHomeModel(true);
+    const target = model.find();
+    model.remove(...target);
+    smodel.add(...target);
+  }
   home() {
     app.route('home');
   }
   async base() {
     const model = new HomeModel(true);
     const view = new HomeView(this, true);
+    const smodel = new SelectedHomeModel(true);
     model.addController(this);
+    smodel.addController(this);
     model.list?.length || (await model.loadData());
-    return view.render(model);
+    return view.render(model, smodel);
   }
   listen(model = err('')) {
     switch (true) {
