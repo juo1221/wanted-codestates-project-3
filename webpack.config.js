@@ -34,13 +34,7 @@ module.exports = {
     client: {
       overlay: true,
     },
-    proxy: {
-      '/api': 'http://localhost:8081',
-    },
     port: 8081,
-    onBeforeSetupMiddleware: (devServer) => {
-      devServer.app.use(apiMocker('/api', 'mocks/api'));
-    },
   },
   module: {
     rules: [
@@ -57,7 +51,10 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin({
-      patterns: [{ from: './src/images', to: './images', noErrorOnMissing: true }],
+      patterns: [
+        { from: './src/images', to: './images', noErrorOnMissing: true },
+        { from: './src/components/data/', to: './data', noErrorOnMissing: true },
+      ],
     }),
     new webpack.BannerPlugin({
       banner: `

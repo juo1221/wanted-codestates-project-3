@@ -36,7 +36,7 @@ const app = new App('#main');
 
 (async () => {
   const homeModel = new HomeModel(true);
-  homeModel.data = new JsonData('/api/options');
+  homeModel.data = new JsonData('./data/mockup.json');
   console.log(homeModel);
   await homeModel.loadData();
   app.add('home', (_) => new HomeController(true));
