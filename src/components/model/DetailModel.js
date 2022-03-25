@@ -5,6 +5,7 @@ const DetailModel = class extends Model {
   #name;
   #emoji;
   #size = 'size-xs';
+  #state = false;
   constructor(_id = err(''), _name = err(''), _emoji = err('')) {
     super();
     this.#id = _id;
@@ -23,8 +24,15 @@ const DetailModel = class extends Model {
   get size() {
     return this.#size;
   }
+  get state() {
+    return this.#state;
+  }
   chageSize(size) {
     this.#size = size;
+    this.notify();
+  }
+  toggle() {
+    this.#state = !this.#state;
     this.notify();
   }
 };

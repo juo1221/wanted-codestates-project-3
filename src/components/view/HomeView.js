@@ -5,6 +5,7 @@ import { append } from '@Utils/util';
 import { prop } from '@Utils/util';
 import { is } from '@Utils/util';
 import { el } from '@Utils/util';
+import { sel } from '@Utils/util';
 
 const HomeView = class extends View {
   constructor(controller, isSingleton) {
@@ -12,6 +13,7 @@ const HomeView = class extends View {
   }
   render(model = err(`no model : ${model} `)) {
     if (!is(model, HomeModel)) err(`invalid model : ${model}`);
+
     const { controller: ctrl } = this;
     return append(
       el('div'),
@@ -24,14 +26,14 @@ const HomeView = class extends View {
         el('h1', 'className', 'container-title', 'innerHTML', 'avaliable options'),
         append(
           el('ul', 'className', 'item-container'),
-          ...model.list.map((model) =>
+          ...model.list.map((li) =>
             append(
-              el('li', 'className', `item ${model.size}`, 'addEventListener', ['click', () => ctrl.$select()]),
-              el('span', 'innerHTML', `${model.emoji} ${model.name}`),
+              el('li', 'className', `item ${li.size}`, 'addEventListener', ['click', () => ctrl.$select(li.id)]),
+              el('span', 'innerHTML', `${li.emoji} ${li.name}`),
             ),
           ),
         ),
-        el('span', 'className', 'item-cnt', 'innerHTML', '0 / 0'),
+        el('span', 'className', 'item-cnt', 'innerHTML', `${model.totalClickedCnt} / ${model.length}`),
       ),
       append(
         el('div', 'className', 'move-buttons'),
