@@ -57,7 +57,7 @@ const HomeView = class extends View {
           el('ul', 'className', 'item-container'),
           ...smodel.list.map((li) => {
             return append(
-              el('li', 'className', `item ${li.size}`, 'addEventListener', ['click', () => ctrl.$select(li.id)]),
+              el('li', 'className', `item ${li.size}`, 'addEventListener', ['click', () => ctrl.$selectOpt(li.id)]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),
             );
           }),

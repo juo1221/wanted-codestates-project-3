@@ -52,6 +52,7 @@ const HomeModel = class extends Model {
   }
   get(id) {
     let res;
+    console.log(this._list);
     if (
       !this._list.some((li) => {
         return li.id == id && (res = li);

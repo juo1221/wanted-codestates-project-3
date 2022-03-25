@@ -28,6 +28,11 @@ const Home = class extends Controller {
     model.addController(this);
     model.toggle();
   }
+  $selectOpt(id) {
+    const model = new SelectedHomeModel(true).get(id);
+    model.addController(this);
+    model.toggle();
+  }
   $reset() {
     const model = new HomeModel(true);
     model.reset();
@@ -40,7 +45,13 @@ const Home = class extends Controller {
     smodel.add(...model.list);
     model.clear();
   }
-  $moveLeft() {}
+  $moveLeft() {
+    const model = new HomeModel(true);
+    const smodel = new SelectedHomeModel(true);
+    const target = smodel.find();
+    model.add(...target);
+    smodel.remove(...target);
+  }
   $moveRight() {
     const model = new HomeModel(true);
     const smodel = new SelectedHomeModel(true);
