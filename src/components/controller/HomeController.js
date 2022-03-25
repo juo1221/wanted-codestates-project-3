@@ -5,6 +5,7 @@ import DetailModel from '@Components/model/DetailModel';
 import HomeView from '@Components/view/HomeView';
 import { is } from '@Utils/util';
 import app from '../../app';
+import { setTimeout } from 'core-js';
 
 const Home = class extends Controller {
   constructor(isSingleton = false) {
@@ -13,7 +14,12 @@ const Home = class extends Controller {
   $list() {
     app.route('home');
   }
-  $search() {}
+  $search(input) {
+    const target = input.value.trim();
+    const model = new HomeModel(true);
+    model.addController(this);
+    model.search(target);
+  }
   $select(id) {
     const model = new HomeModel(true).get(id);
     model.addController(this);

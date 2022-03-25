@@ -26,6 +26,10 @@ const HomeModel = class extends Model {
     if (!this._list.some((li, idx) => li.id === id && this._list.splice(idx, 1))) err('');
     this.notify();
   }
+  search(input) {
+    prop(this, { _searchList: this.list.filter((li) => li.search(input)) });
+    this.notify();
+  }
   get list() {
     return this._list && [...this._list];
   }
@@ -47,6 +51,9 @@ const HomeModel = class extends Model {
   }
   get totalClickedCnt() {
     return this.list.reduce((prev, curr) => ((prev += curr.state ? 1 : 0), prev), 0);
+  }
+  get searchList() {
+    return this._searchList;
   }
 };
 

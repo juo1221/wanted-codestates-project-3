@@ -13,20 +13,19 @@ const HomeView = class extends View {
   }
   render(model = err(`no model : ${model} `)) {
     if (!is(model, HomeModel)) err(`invalid model : ${model}`);
-
     const { controller: ctrl } = this;
     return append(
       el('div'),
       append(
         el('section', 'id', 'container-avaliable'),
         el('input', 'className', 'searchBar', 'type', 'text', 'placeholder', 'search', 'autocomplete', 'off', 'addEventListener', [
-          'keyup',
-          (e) => ctrl.$search(e.target.value.trim()),
+          'change',
+          (e) => ctrl.$search(e.target),
         ]),
         el('h1', 'className', 'container-title', 'innerHTML', 'avaliable options'),
         append(
           el('ul', 'className', 'item-container'),
-          ...model.list.map((li) =>
+          ...(model.searchList ?? model.list).map((li) =>
             append(
               el('li', 'className', `item ${li.size}`, 'addEventListener', ['click', () => ctrl.$select(li.id)]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),

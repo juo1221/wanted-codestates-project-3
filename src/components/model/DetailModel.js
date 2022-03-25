@@ -27,6 +27,9 @@ const DetailModel = class extends Model {
   get state() {
     return this.#state;
   }
+  search(input) {
+    return this.#name.includes(input) ? this : null;
+  }
   chageSize(size) {
     this.#size = size;
     this.notify();
