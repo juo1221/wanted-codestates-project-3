@@ -12,9 +12,9 @@ const HomeView = class extends View {
   constructor(controller, isSingleton) {
     super(controller, isSingleton);
   }
-  render(...model) {
-    const hmodel = model[0];
-    const smodel = model[1];
+  render(props) {
+    const { model: hmodel, smodel, titleAvModel, titleSeModel, checkBoxModel } = props;
+    console.log(checkBoxModel);
     if (!is(hmodel, HomeModel)) err(`invalid model : ${hmodel}`);
     if (!is(smodel, HomeModel)) err(`invalid model : ${smodel}`);
     const { controller: ctrl } = this;
@@ -26,7 +26,7 @@ const HomeView = class extends View {
           'change',
           (e) => ctrl.$search(e.target),
         ]),
-        el('h1', 'className', 'container-title', 'innerHTML', 'avaliable options'),
+        el('h1', 'className', 'container-title', 'innerHTML', titleAvModel.title),
         append(
           el('ul', 'className', 'item-container'),
           ...hmodel.list.map((li) =>
@@ -52,7 +52,7 @@ const HomeView = class extends View {
           'change',
           (e) => ctrl.$searchOpt(e.target),
         ]),
-        el('h1', 'className', 'container-title', 'innerHTML', 'selected options'),
+        el('h1', 'className', 'container-title', 'innerHTML', titleSeModel.title),
         append(
           el('ul', 'className', 'item-container'),
           ...smodel.list.map((li) => {
@@ -70,11 +70,26 @@ const HomeView = class extends View {
         append(
           el('div', 'className', 'setting-title'),
           el('p', 'innerHTML', '타이틀'),
-          el('input', 'type', 'checkbox', 'name', 'checked', 'true'),
+          el('input', 'type', 'checkbox', 'checked', checkBoxModel.state, 'addEventListener', ['change', () => ctrl.$lock()]),
           append(
             el('div'),
-            el('input', 'type', 'text', 'id', 'avaliable', 'placeholder', 'available options'),
-            el('input', 'type', 'text', 'id', 'selected', 'placeholder', 'selected options'),
+            el(
+              'input',
+              'type',
+              'text',
+              'id',
+              'available',
+              'placeholder',
+              'available options',
+              'readOnly',
+              checkBoxModel.readonly,
+              'addEventListener',
+              ['change', (e) => ctrl.$chageTitleAv(e.target.value.trim())],
+            ),
+            el('input', 'type', 'text', 'id', 'selected', 'placeholder', 'selected options', 'readOnly', checkBoxModel.readonly, 'addEventListener', [
+              'change',
+              (e) => ctrl.$chageTitleSe(e.target.value.trim()),
+            ]),
           ),
         ),
         append(

@@ -5,9 +5,13 @@ import DetailModel from '@Components/model/DetailModel';
 import HomeView from '@Components/view/HomeView';
 import SelectedHomeModel from '@Components/model/SelectedHomeModel';
 import SelectedDetailModel from '@Components/model/SelectedDetailModel';
+import TitleAvModel from '@Components/model/TitleAvModel';
+import TitleSeModel from '@Components/model/TitleSeModel';
+import CheckBoxModel from '@Components/model/CheckBoxModel';
+
 import { is } from '@Utils/util';
-import app from '../../app';
 import { setTimeout } from 'core-js';
+import app from '../../app';
 
 const Home = class extends Controller {
   constructor(isSingleton = false) {
@@ -74,6 +78,21 @@ const Home = class extends Controller {
     smodel.add(...target);
     model.remove(...target);
   }
+  $chageTitleAv(input) {
+    const titleAvModel = new TitleAvModel(true);
+    titleAvModel.addController(this);
+    titleAvModel.changeTo(input);
+  }
+  $chageTitleSe(input) {
+    const titleSeModel = new TitleSeModel(true);
+    titleSeModel.addController(this);
+    titleSeModel.changeTo(input);
+  }
+  $lock() {
+    const checkBoxModel = new CheckBoxModel(true);
+    checkBoxModel.addController(this);
+    checkBoxModel.toggle();
+  }
   home() {
     app.route('home');
   }
@@ -81,16 +100,27 @@ const Home = class extends Controller {
     const model = new HomeModel(true);
     const view = new HomeView(this, true);
     const smodel = new SelectedHomeModel(true);
+    const titleAvModel = new TitleAvModel(true);
+    const titleSeModel = new TitleSeModel(true);
+    const checkBoxModel = new CheckBoxModel(true);
     model.addController(this);
     smodel.addController(this);
-    return view.render(model, smodel);
+    titleAvModel.addController(this);
+    titleSeModel.addController(this);
+    const props = { model, smodel, titleAvModel, titleSeModel, checkBoxModel };
+    return view.render(props);
   }
   listen(model = err('')) {
     switch (true) {
       case is(model, HomeModel):
+      case is(model, DetailModel):
         this.home();
         break;
-      case is(model, DetailModel):
+      case is(model, TitleAvModel):
+      case is(model, TitleSeModel):
+        this.home();
+        break;
+      case is(model, CheckBoxModel):
         this.home();
         break;
       default:
