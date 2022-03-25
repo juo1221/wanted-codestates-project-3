@@ -1,0 +1,1 @@
+import{err}from"@Utils/util";import Data from"@Components/data/Data";const JsonData=class extends Data{#t;constructor(t){"string"!=typeof t&&err(`invalid typeof url : ${t}`),super(),this.#t=t}async _getData(){return(await fetch(this.#t)).json()}};export default JsonData;

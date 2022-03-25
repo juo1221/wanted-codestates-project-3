@@ -1,0 +1,1 @@
+const ValidInfo=class{#r;constructor(r){Array.isArray(r)&&r.length||err(`invalid typeof data : ${r}`),this.#r=r.map((r=>{const{id:t,name:e,emoji:i}=r;return"number"==typeof t&&t||err(`invalid id : ${t}`),"string"==typeof e&&e||err(`invalid name : ${e}`),"string"==typeof i&&i||err(`invalid emoji : ${i}`),r}))}get datas(){return this.#r}};export default ValidInfo;
