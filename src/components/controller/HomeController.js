@@ -40,9 +40,11 @@ const Home = class extends Controller {
     model.addController(this);
     model.toggle();
   }
-  $reset() {
+  async $reset() {
     const model = new HomeModel(true);
-    model.reset();
+    const smodel = new SelectedHomeModel(true);
+    await model.loadData();
+    smodel.clear();
   }
   $moveLeftAll() {
     const model = new HomeModel(true);
