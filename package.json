@@ -6,7 +6,9 @@
   "scripts": {
     "start": "webpack serve --progress",
     "build": "NODE_ENV=production webpack --progress",
-    "dev": "NODE_ENV=development webpack --progress"
+    "dev": "NODE_ENV=development webpack --progress",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/juo1221/wanted-codestates-project-3/issues"
   },
-  "homepage": "https://github.com/juo1221/wanted-codestates-project-3#readme",
+  "homepage": "https://juo1221.github.io/wanted-codestates-project-3",
   "devDependencies": {
     "@babel/core": "^7.17.8",
     "@babel/preset-env": "^7.16.11",
@@ -30,6 +32,7 @@
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^3.4.1",
     "express": "^4.17.3",
+    "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.0",
     "sass": "^1.49.9",

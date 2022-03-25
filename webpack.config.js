@@ -34,6 +34,10 @@ module.exports = {
     client: {
       overlay: true,
     },
+    proxy: {
+      '/api': 'http://localhost:8081',
+    },
+    port: 8081,
     onBeforeSetupMiddleware: (devServer) => {
       devServer.app.use(apiMocker('/api', 'mocks/api'));
     },
