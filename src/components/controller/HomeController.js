@@ -37,7 +37,13 @@ const Home = class extends Controller {
     const model = new HomeModel(true);
     model.reset();
   }
-  $moveLeftAll() {}
+  $moveLeftAll() {
+    const model = new HomeModel(true);
+    const smodel = new SelectedHomeModel(true);
+    smodel.addController(this);
+    model.add(...smodel.list);
+    smodel.clear();
+  }
   $moveRightAll() {
     const model = new HomeModel(true);
     const smodel = new SelectedHomeModel(true);
