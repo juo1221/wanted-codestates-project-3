@@ -29,7 +29,7 @@ const HomeView = class extends View {
         el('h1', 'className', 'container-title', 'innerHTML', 'avaliable options'),
         append(
           el('ul', 'className', 'item-container'),
-          ...(hmodel.searchList ?? hmodel.list).map((li) =>
+          ...hmodel.list.map((li) =>
             append(
               el('li', 'className', `item ${li.size}`, 'addEventListener', ['click', () => ctrl.$select(li.id)]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),
@@ -44,7 +44,7 @@ const HomeView = class extends View {
         el('button', 'className', 'btn btn-multi-left', 'innerHTML', '<<', 'addEventListener', ['click', () => ctrl.$moveLeftAll()]),
         el('button', 'className', 'btn btn-multi-right', 'innerHTML', '>>', 'addEventListener', ['click', () => ctrl.$moveRightAll()]),
         el('button', 'className', 'btn btn-single-left', 'innerHTML', '<', 'addEventListener', ['click', () => ctrl.$moveLeft()]),
-        el('button', 'className', 'btn btn-single-right', 'innerHTML', '>', 'addEventListener', ['click', (e) => ctrl.$moveRight()]),
+        el('button', 'className', 'btn btn-single-right', 'innerHTML', '>', 'addEventListener', ['click', () => ctrl.$moveRight()]),
       ),
       append(
         el('section', 'id', 'container-selected'),
@@ -55,7 +55,7 @@ const HomeView = class extends View {
         el('h1', 'className', 'container-title', 'innerHTML', 'selected options'),
         append(
           el('ul', 'className', 'item-container'),
-          ...(smodel.searchList || smodel.list).map((li) => {
+          ...smodel.list.map((li) => {
             return append(
               el('li', 'className', `item ${li.size}`, 'addEventListener', ['click', () => ctrl.$select(li.id)]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),

@@ -5,6 +5,7 @@ import Data from '@Components/data/Data';
 import Model from '@Components/model/Model';
 import { err } from '@Utils/util';
 import { prop } from '@Utils/util';
+import { is } from '@Utils/util';
 
 const HomeModel = class extends Model {
   constructor(isSingleton) {
@@ -19,25 +20,35 @@ const HomeModel = class extends Model {
     });
   }
   add(...list) {
+    for (const li of list) if (!is(li, DetailModel)) err(`invalid list : ${list}`);
     if (!this._list) this._list = [];
     (this._list.push(...list), this._list).forEach((li) => li.reset());
-    this.notify();
   }
   remove(...list) {
-    let result;
+    for (const li of list) if (!is(li, DetailModel)) err(`invalid list : ${list}`);
     if (!list.every((targetLi) => this._list.some((originLi, idx) => originLi.id === targetLi.id && this._list.splice(idx, 1))))
       err(`invalid list : ${list}`);
+    this.notify();
   }
-  search(input) {
-    prop(this, { _searchList: this.list.filter((li) => li.search(input)) });
+  async search(input, smodelList) {
+    await this.loadData();
+    if (!smodelList.every((targetLi) => this._list.some((originLi, idx) => originLi.id === targetLi.id && this._list.splice(idx, 1))))
+      err(`invalid list : ${smodelList}`);
+    prop(this, { _list: this._list });
+    const filtered = input === '' ? this._list : this._list.filter((li) => li.search(input));
+    prop(this, { _list: filtered.length ? filtered : [{ emoji: '정보', name: '없음' }] });
     this.notify();
   }
   reset() {
-    prop(this, { _searchList: this.list.map((li) => (li.reset(), li)) });
+    prop(this, { _list: this._list.map((li) => (li.reset(), li)) });
     this.notify();
   }
   find() {
-    return this.list.filter((li) => li.find());
+    return this._list.filter((li) => li.find());
+  }
+  clear() {
+    prop(this, { _list: [] });
+    this.notify();
   }
   get(id) {
     let res;
@@ -60,9 +71,6 @@ const HomeModel = class extends Model {
   }
   get totalClickedCnt() {
     return this.list.reduce((prev, curr) => ((prev += curr.state ? 1 : 0), prev), 0);
-  }
-  get searchList() {
-    return this._searchList;
   }
 };
 

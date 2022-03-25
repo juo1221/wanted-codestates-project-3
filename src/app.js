@@ -31,11 +31,15 @@ const App = class extends Map {
     append(el(sel(this.#parent), 'innerHTML', ''), await controller['base'](...arg));
   }
 };
-const homeModel = new HomeModel(true);
-homeModel.data = new JsonData('/api/options');
 
 const app = new App('#main');
-app.add('home', (_) => new HomeController(true));
-app.route('home');
+
+(async () => {
+  const homeModel = new HomeModel(true);
+  homeModel.data = new JsonData('/api/options');
+  await homeModel.loadData();
+  app.add('home', (_) => new HomeController(true));
+  app.route('home');
+})();
 
 export default app;

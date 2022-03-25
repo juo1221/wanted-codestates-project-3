@@ -19,8 +19,9 @@ const Home = class extends Controller {
   $search(input) {
     const target = input.value.trim();
     const model = new HomeModel(true);
+    const smodelList = new SelectedHomeModel(true).list;
     model.addController(this);
-    model.search(target);
+    model.search(target, smodelList);
   }
   $select(id) {
     const model = new HomeModel(true).get(id);
@@ -32,14 +33,20 @@ const Home = class extends Controller {
     model.reset();
   }
   $moveLeftAll() {}
-  $moveRightAll() {}
+  $moveRightAll() {
+    const model = new HomeModel(true);
+    const smodel = new SelectedHomeModel(true);
+    model.addController(this);
+    smodel.add(...model.list);
+    model.clear();
+  }
   $moveLeft() {}
   $moveRight() {
     const model = new HomeModel(true);
     const smodel = new SelectedHomeModel(true);
     const target = model.find();
-    model.remove(...target);
     smodel.add(...target);
+    model.remove(...target);
   }
   home() {
     app.route('home');
@@ -50,7 +57,6 @@ const Home = class extends Controller {
     const smodel = new SelectedHomeModel(true);
     model.addController(this);
     smodel.addController(this);
-    model.list?.length || (await model.loadData());
     return view.render(model, smodel);
   }
   listen(model = err('')) {
