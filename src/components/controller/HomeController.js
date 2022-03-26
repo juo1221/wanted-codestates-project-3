@@ -9,6 +9,7 @@ import TitleAvModel from '@Components/model/TitleAvModel';
 import TitleSeModel from '@Components/model/TitleSeModel';
 import CheckBoxModel from '@Components/model/CheckBoxModel';
 import CheckBoxModelS from '@Components/model/CheckBoxModelS';
+import CheckBoxModelC from '@Components/model/CheckBoxModelC';
 import CheckBoxModelM from '@Components/model/CheckBoxModelM';
 import SearchModel from '@Components/model/SearchModel';
 import RadioModel from '@Components/model/RadioModel';
@@ -136,6 +137,11 @@ const Home = class extends Controller {
     checkBoxModelM.addController(this);
     checkBoxModelM.toggle();
   }
+  $lockShowCnt() {
+    const checkBoxModelC = new CheckBoxModelC(true);
+    checkBoxModelC.addController(this);
+    checkBoxModelC.toggle();
+  }
   $radioToggle(size) {
     const radioModel = new RadioModel(true);
     const radioModel2 = new RadioModel2(true);
@@ -190,6 +196,7 @@ const Home = class extends Controller {
     const titleSeModel = new TitleSeModel(true);
     const checkBoxModel1 = new CheckBoxModel(true);
     const checkBoxModelS = new CheckBoxModelS(true);
+    const checkBoxModelC = new CheckBoxModelC(true);
     const checkBoxModel3 = new CheckBoxModelM(true);
     const searchModel = new SearchModel(true);
     const radioModel = new RadioModel(true);
@@ -204,6 +211,7 @@ const Home = class extends Controller {
     checkBoxModel1.addController(this);
     checkBoxModelS.addController(this);
     checkBoxModel3.addController(this);
+    checkBoxModelC.addController(this);
     searchModel.addController(this);
     itemSizeModel.addController(this);
     containerModel.addController(this);
@@ -216,6 +224,7 @@ const Home = class extends Controller {
       checkBoxModel1,
       checkBoxModelS,
       checkBoxModel3,
+      checkBoxModelC,
       radioModel,
       radioModel2,
       radioModel3,

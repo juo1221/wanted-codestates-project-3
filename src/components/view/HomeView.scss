@@ -61,6 +61,12 @@
   @include borderF(2px);
   height: $cnt-height;
 }
+.visible {
+  visibility: visible;
+}
+.invisible {
+  visibility: hidden;
+}
 #setting {
   @include borderF(2px);
   position: absolute;

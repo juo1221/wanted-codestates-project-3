@@ -28,6 +28,7 @@ const HomeView = class extends View {
       checkBoxModel1,
       checkBoxModelS,
       checkBoxModel3,
+      checkBoxModelC,
       radioModel,
       radioModel2,
       radioModel3,
@@ -75,7 +76,10 @@ const HomeView = class extends View {
             ),
           ),
         ),
-        el('div', 'className', 'item-cnt', 'innerHTML', `${hmodel.totalClickedCnt} / ${hmodel.length}`),
+        append(
+          el('div', 'className', `item-cnt`),
+          el('span', 'className', ` ${checkBoxModelC.state ? 'visible' : 'invisible'}`, 'innerHTML', `${hmodel.totalClickedCnt} / ${hmodel.length}`),
+        ),
       ),
       append(
         el('div', 'id', 'move-buttons'),
@@ -120,7 +124,10 @@ const HomeView = class extends View {
             );
           }),
         ),
-        el('div', 'className', 'item-cnt', 'innerHTML', `${smodel.totalClickedCnt} / ${smodel.length}`),
+        append(
+          el('div', 'className', `item-cnt`),
+          el('span', 'className', ` ${checkBoxModelC.state ? 'visible' : 'invisible'}`, 'innerHTML', `${smodel.totalClickedCnt} / ${smodel.length}`),
+        ),
       ),
       append(
         el('section', 'id', 'setting'),
@@ -163,13 +170,16 @@ const HomeView = class extends View {
           el('p', 'innerHTML', '하나씩만 옮기기'),
           el('input', 'type', 'checkbox', 'id', 'move-controller', 'checked', checkBoxModel3.state, 'addEventListener', [
             'change',
-            (e) => ctrl.$lockMove(e.target.id),
+            () => ctrl.$lockMove(),
           ]),
         ),
         append(
           el('div', 'className', 'setting-showcnt'),
           el('p', 'innerHTML', '선택된 아이템 개수 표시'),
-          el('input', 'type', 'checkbox', 'id', 'cnt-controller', 'checked', 'true'),
+          el('input', 'type', 'checkbox', 'id', 'cnt-controller', 'checked', checkBoxModelC.state, 'addEventListener', [
+            'change',
+            () => ctrl.$lockShowCnt(),
+          ]),
         ),
         append(
           el('div', 'className', 'setting-item-size'),
