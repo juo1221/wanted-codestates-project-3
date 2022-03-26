@@ -3,11 +3,10 @@
 
 .wrapper {
   width: 90vw;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: auto;
+  margin-top: 16rem;
 }
 .container {
   position: relative;
@@ -29,7 +28,7 @@
   height: $title-height;
 }
 .item-container {
-  height: $item-container-height;
+  height: 100%;
   border: 2px solid $border-color;
   border-top: 1px;
   border-bottom: 1px;

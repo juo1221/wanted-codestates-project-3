@@ -5,7 +5,7 @@ import { err } from '@Utils/util';
 const ContainerModel = class extends Model {
   #width = '300';
   #height = '400';
-  _reg = /([0-9]*)/;
+
   constructor(isSingleton) {
     super();
     if (isSingleton) return singleton.getInstance(this);
@@ -21,9 +21,9 @@ const ContainerModel = class extends Model {
     this.#width = width;
     this.notify();
   }
-  changeHeight(heigth) {
-    if (typeof heigth !== 'number' && typeof heigth !== 'string') err(`invalid typeof heigth : ${heigth}`);
-    this.#width = width;
+  changeHeight(height) {
+    if (typeof height !== 'number' && typeof height !== 'string') err(`invalid typeof height : ${height}`);
+    this.#height = height;
     this.notify();
   }
 };
