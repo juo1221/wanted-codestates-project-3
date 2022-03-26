@@ -1,8 +1,15 @@
-@import "./scss/normalize.scss";
-@import "./scss/variables.scss";
+@import './scss/normalize.scss';
+@import './scss/variables.scss';
+@import './scss/mixins.scss';
 
 body {
   width: 100vw;
   height: 100vh;
   font-size: 1.6rem;
+  .btn-setting {
+    @include buttonF();
+    position: fixed;
+    top: 10rem;
+    right: -2rem;
+  }
 }

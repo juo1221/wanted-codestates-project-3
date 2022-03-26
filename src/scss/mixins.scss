@@ -1,0 +1,23 @@
+@import './variables.scss';
+
+@mixin buttonF {
+  width: $btn-width;
+  height: $btn-height;
+  border-radius: $border-radius;
+  background-color: $btn-BgColor;
+  margin: $btn-margin $btn-margin * 5;
+  border: 1px solid $border-color;
+  cursor: pointer;
+}
+
+@mixin borderF($width, $radius: $border-radius) {
+  border: $width solid $border-color;
+  border-radius: $radius;
+}
+
+@mixin flexF($content: center, $items: center, $direc: rows) {
+  display: flex;
+  justify-content: $content;
+  align-items: $items;
+  flex-direction: $direc;
+}

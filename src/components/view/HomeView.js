@@ -1,5 +1,6 @@
 import singleton from '@Components/Single';
 import HomeModel from '@Components/model/HomeModel';
+import './HomeView.scss';
 import View from '@Components/view/View';
 import { append } from '@Utils/util';
 import { prop } from '@Utils/util';
@@ -11,6 +12,8 @@ import { err } from '@Utils/util';
 const HomeView = class extends View {
   constructor(controller, isSingleton) {
     super(controller, isSingleton);
+    const settingBtn = sel('.btn-setting');
+    settingBtn.addEventListener('click', () => sel('#setting').classList.toggle('activated'));
   }
   render(props) {
     const {
@@ -32,14 +35,12 @@ const HomeView = class extends View {
     if (!is(smodel, HomeModel)) err(`invalid model : ${smodel}`);
     const { controller: ctrl } = this;
     return append(
-      el('div'),
+      el('div', 'className', 'wrapper'),
       append(
         el(
           'section',
-          'id',
-          'container-avaliable',
-          '@backgroundColor',
-          'red',
+          'className',
+          'container container-avaliable',
           '@width',
           containerModel.width / 10 + 'rem',
           '@height',
@@ -60,7 +61,7 @@ const HomeView = class extends View {
           'addEventListener',
           ['change', (e) => ctrl.$search(e.target)],
         ),
-        el('h1', 'className', 'container-title', 'innerHTML', titleAvModel.title),
+        el('div', 'className', 'container-title', 'innerHTML', titleAvModel.title),
         append(
           el('ul', 'className', 'item-container'),
           ...hmodel.list.map((li) =>
@@ -70,10 +71,10 @@ const HomeView = class extends View {
             ),
           ),
         ),
-        el('span', 'className', 'item-cnt', 'innerHTML', `${hmodel.totalClickedCnt} / ${hmodel.length}`),
+        el('div', 'className', 'item-cnt', 'innerHTML', `${hmodel.totalClickedCnt} / ${hmodel.length}`),
       ),
       append(
-        el('div', 'className', 'move-buttons'),
+        el('div', 'id', 'move-buttons'),
         el('button', 'className', 'btn btn-reset', 'innerHTML', 'reset', 'addEventListener', ['click', () => ctrl.$reset()]),
         el('button', 'className', 'btn btn-multi-left', 'innerHTML', '<<', 'addEventListener', ['click', () => ctrl.$moveLeftAll()]),
         el('button', 'className', 'btn btn-multi-right', 'innerHTML', '>>', 'addEventListener', ['click', () => ctrl.$moveRightAll()]),
@@ -83,10 +84,8 @@ const HomeView = class extends View {
       append(
         el(
           'section',
-          'id',
-          'container-selected',
-          '@backgroundColor',
-          'red',
+          'className',
+          'container container-selected',
           '@width',
           containerModel.width / 10 + 'rem',
           '@height',
@@ -107,7 +106,7 @@ const HomeView = class extends View {
           'addEventListener',
           ['change', (e) => ctrl.$searchOpt(e.target)],
         ),
-        el('h1', 'className', 'container-title', 'innerHTML', titleSeModel.title),
+        el('div', 'className', 'container-title', 'innerHTML', titleSeModel.title),
         append(
           el('ul', 'className', 'item-container'),
           ...smodel.list.map((li) => {
@@ -117,44 +116,35 @@ const HomeView = class extends View {
             );
           }),
         ),
-        el('span', 'className', 'item-cnt', 'innerHTML', `${smodel.totalClickedCnt} / ${smodel.length}`),
+        el('div', 'className', 'item-cnt', 'innerHTML', `${smodel.totalClickedCnt} / ${smodel.length}`),
       ),
       append(
-        el('section', 'className', 'setting'),
-        el('button', 'className', 'btn btn-settin', 'innerHTML', '세팅'),
+        el('section', 'id', 'setting'),
+        el('div'),
         append(
-          el('div', 'className', 'setting-title'),
+          el('div', 'className', 'title'),
           el('p', 'innerHTML', '타이틀'),
           el('input', 'type', 'checkbox', 'checked', checkBoxModel1.state, 'addEventListener', ['change', () => ctrl.$lock()]),
-          append(
-            el('div'),
-            el(
-              'input',
-              'type',
-              'text',
-              'id',
-              'available',
-              'placeholder',
-              'available options',
-              'readOnly',
-              checkBoxModel1.readonly,
-              'addEventListener',
-              ['change', (e) => ctrl.$chageTitleAv(e.target.value.trim())],
-            ),
-            el(
-              'input',
-              'type',
-              'text',
-              'id',
-              'selected',
-              'placeholder',
-              'selected options',
-              'readOnly',
-              checkBoxModel1.readonly,
-              'addEventListener',
-              ['change', (e) => ctrl.$chageTitleSe(e.target.value.trim())],
-            ),
+        ),
+        append(
+          el('div', 'className', 'inputs'),
+          el(
+            'input',
+            'type',
+            'text',
+            'id',
+            'available',
+            'placeholder',
+            'available options',
+            'readOnly',
+            checkBoxModel1.readonly,
+            'addEventListener',
+            ['change', (e) => ctrl.$chageTitleAv(e.target.value.trim())],
           ),
+          el('input', 'type', 'text', 'id', 'selected', 'placeholder', 'selected options', 'readOnly', checkBoxModel1.readonly, 'addEventListener', [
+            'change',
+            (e) => ctrl.$chageTitleSe(e.target.value.trim()),
+          ]),
         ),
         append(
           el('div', 'className', 'setting-search'),
@@ -170,46 +160,45 @@ const HomeView = class extends View {
           el('input', 'type', 'checkbox', 'id', 'move-controller', 'checked', 'true'),
         ),
         append(
+          el('div', 'className', 'setting-showcnt'),
+          el('p', 'innerHTML', '선택된 아이템 개수 표시'),
+          el('input', 'type', 'checkbox', 'id', 'cnt-controller', 'checked', 'true'),
+        ),
+        append(
           el('div', 'className', 'setting-item-size'),
           el('p', 'innerHTML', '아이템 크기'),
           append(
-            el('div'),
+            el('div', 'className', 'radios'),
             append(
-              el('div'),
-              append(
-                el('p', 'innerHTML', 'XS'),
-                el('input', 'type', 'radio', 'id', 'size-xs', 'checked', radioModel.state, 'addEventListener', [
-                  'change',
-                  (e) => ctrl.$radioToggle(e.target.id),
-                ]),
-              ),
+              el('div', 'className', 'radio'),
+              el('p', 'innerHTML', 'XS'),
+              el('input', 'type', 'radio', 'id', 'size-xs', 'checked', radioModel.state, 'addEventListener', [
+                'change',
+                (e) => ctrl.$radioToggle(e.target.id),
+              ]),
             ),
             append(
-              el('div'),
-              append(
-                el('p', 'innerHTML', 'S'),
-                el('input', 'type', 'radio', 'id', 'size-s', 'checked', radioModel2.state, 'addEventListener', [
-                  'change',
-                  (e) => ctrl.$radioToggle2(e.target.id),
-                ]),
-              ),
+              el('div', 'className', 'radio'),
+              el('p', 'innerHTML', 'S'),
+              el('input', 'type', 'radio', 'id', 'size-s', 'checked', radioModel2.state, 'addEventListener', [
+                'change',
+                (e) => ctrl.$radioToggle2(e.target.id),
+              ]),
             ),
             append(
-              el('div'),
-              append(
-                el('p', 'innerHTML', 'M'),
-                el('input', 'type', 'radio', 'id', 'size-m', 'checked', radioModel3.state, 'addEventListener', [
-                  'change',
-                  (e) => ctrl.$radioToggle3(e.target.id),
-                ]),
-              ),
+              el('div', 'className', 'radio'),
+              el('p', 'innerHTML', 'M'),
+              el('input', 'type', 'radio', 'id', 'size-m', 'checked', radioModel3.state, 'addEventListener', [
+                'change',
+                (e) => ctrl.$radioToggle3(e.target.id),
+              ]),
             ),
           ),
         ),
         append(
           el('div', 'className', 'setting-window-size'),
           append(
-            el('div'),
+            el('div', 'className', 'window-width'),
             el('p', 'innerHTML', '가로'),
             append(
               el('div'),
@@ -217,11 +206,10 @@ const HomeView = class extends View {
                 'change',
                 (e) => ctrl.$chageWidth(e.target.value.trim()),
               ]),
-              el('span', 'innerHTML', ' px'),
             ),
           ),
           append(
-            el('div'),
+            el('div', 'className', 'window-height'),
             el('p', 'innerHTML', '세로'),
             append(
               el('div'),
@@ -229,7 +217,6 @@ const HomeView = class extends View {
                 'change',
                 (e) => ctrl.$chageHeight(e.target.value.trim()),
               ]),
-              el('span', 'innerHTML', ' px'),
             ),
           ),
         ),
