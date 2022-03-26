@@ -14,6 +14,7 @@ import RadioModel from '@Components/model/RadioModel';
 import RadioModel2 from '@Components/model/RadioModel2';
 import RadioModel3 from '@Components/model/RadioModel3';
 import ItemSizeModel from '@Components/model/ItemSizeModel';
+import ContainerModel from '@Components/model/ContainerModel';
 
 import { is } from '@Utils/util';
 import { setTimeout } from 'core-js';
@@ -137,6 +138,16 @@ const Home = class extends Controller {
     itemSizeModel.addController(this);
     itemSizeModel.changeSize(size);
   }
+  $chageWidth(width) {
+    const containerModel = new ContainerModel(true);
+    containerModel.addController(this);
+    containerModel.changeWidth(width);
+  }
+  $chageHeight(height) {
+    const containerModel = new ContainerModel(true);
+    containerModel.addController(this);
+    containerModel.changeHeight(height);
+  }
   home() {
     app.route('home');
   }
@@ -154,6 +165,7 @@ const Home = class extends Controller {
     const radioModel2 = new RadioModel2(true);
     const radioModel3 = new RadioModel3(true);
     const itemSizeModel = new ItemSizeModel(true);
+    const containerModel = new ContainerModel(true);
     model.addController(this);
     smodel.addController(this);
     titleAvModel.addController(this);
@@ -163,6 +175,7 @@ const Home = class extends Controller {
     checkBoxModel3.addController(this);
     searchModel.addController(this);
     itemSizeModel.addController(this);
+    containerModel.addController(this);
 
     const props = {
       model,
@@ -176,6 +189,7 @@ const Home = class extends Controller {
       radioModel2,
       radioModel3,
       itemSizeModel,
+      containerModel,
     };
     return view.render(props);
   }
@@ -200,6 +214,9 @@ const Home = class extends Controller {
         this.home();
         break;
       case is(model, ItemSizeModel):
+        this.home();
+        break;
+      case is(model, ContainerModel):
         this.home();
         break;
       default:

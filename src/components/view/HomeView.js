@@ -25,6 +25,7 @@ const HomeView = class extends View {
       radioModel2,
       radioModel3,
       itemSizeModel,
+      containerModel,
     } = props;
 
     if (!is(hmodel, HomeModel)) err(`invalid model : ${hmodel}`);
@@ -33,7 +34,17 @@ const HomeView = class extends View {
     return append(
       el('div'),
       append(
-        el('section', 'id', 'container-avaliable'),
+        el(
+          'section',
+          'id',
+          'container-avaliable',
+          '@backgroundColor',
+          'red',
+          '@width',
+          containerModel.width / 10 + 'rem',
+          '@height',
+          containerModel.height / 10 + 'rem',
+        ),
         el(
           'input',
           'className',
@@ -70,7 +81,17 @@ const HomeView = class extends View {
         el('button', 'className', 'btn btn-single-right', 'innerHTML', '>', 'addEventListener', ['click', () => ctrl.$moveRight()]),
       ),
       append(
-        el('section', 'id', 'container-selected'),
+        el(
+          'section',
+          'id',
+          'container-selected',
+          '@backgroundColor',
+          'red',
+          '@width',
+          containerModel.width / 10 + 'rem',
+          '@height',
+          containerModel.height / 10 + 'rem',
+        ),
         el(
           'input',
           'className',
@@ -187,8 +208,30 @@ const HomeView = class extends View {
         ),
         append(
           el('div', 'className', 'setting-window-size'),
-          append(el('div'), el('p', 'innerHTML', '가로'), append(el('div'), el('input', 'type', 'text', 'id', 'size-width', 'value', '300'))),
-          append(el('div'), el('p', 'innerHTML', '세로'), append(el('div'), el('input', 'type', 'text', 'id', 'size-height', 'value', '400'))),
+          append(
+            el('div'),
+            el('p', 'innerHTML', '가로'),
+            append(
+              el('div'),
+              el('input', 'type', 'text', 'id', 'size-width', 'value', containerModel.width, 'addEventListener', [
+                'change',
+                (e) => ctrl.$chageWidth(e.target.value.trim()),
+              ]),
+              el('span', 'innerHTML', ' px'),
+            ),
+          ),
+          append(
+            el('div'),
+            el('p', 'innerHTML', '세로'),
+            append(
+              el('div'),
+              el('input', 'type', 'text', 'id', 'size-height', 'value', containerModel.height, 'addEventListener', [
+                'change',
+                (e) => ctrl.$chageHeight(e.target.value.trim()),
+              ]),
+              el('span', 'innerHTML', ' px'),
+            ),
+          ),
         ),
       ),
     );
