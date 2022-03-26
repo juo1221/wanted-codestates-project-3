@@ -13,8 +13,20 @@ const HomeView = class extends View {
     super(controller, isSingleton);
   }
   render(props) {
-    const { model: hmodel, smodel, titleAvModel, titleSeModel, checkBoxModel1, checkBoxModelS, checkBoxModel3 } = props;
-    // console.log(checkBoxModel1);
+    const {
+      model: hmodel,
+      smodel,
+      titleAvModel,
+      titleSeModel,
+      checkBoxModel1,
+      checkBoxModelS,
+      checkBoxModel3,
+      radioModel,
+      radioModel2,
+      radioModel3,
+      itemSizeModel,
+    } = props;
+
     if (!is(hmodel, HomeModel)) err(`invalid model : ${hmodel}`);
     if (!is(smodel, HomeModel)) err(`invalid model : ${smodel}`);
     const { controller: ctrl } = this;
@@ -42,7 +54,7 @@ const HomeView = class extends View {
           el('ul', 'className', 'item-container'),
           ...hmodel.list.map((li) =>
             append(
-              el('li', 'className', `item ${li.size}`, 'addEventListener', ['click', () => ctrl.$select(li.id)]),
+              el('li', 'className', `item ${itemSizeModel.size}`, 'addEventListener', ['click', () => ctrl.$select(li.id)]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),
             ),
           ),
@@ -79,7 +91,7 @@ const HomeView = class extends View {
           el('ul', 'className', 'item-container'),
           ...smodel.list.map((li) => {
             return append(
-              el('li', 'className', `item ${li.size}`, 'addEventListener', ['click', () => ctrl.$selectOpt(li.id)]),
+              el('li', 'className', `item ${itemSizeModel.size}`, 'addEventListener', ['click', () => ctrl.$selectOpt(li.id)]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),
             );
           }),
@@ -141,9 +153,36 @@ const HomeView = class extends View {
           el('p', 'innerHTML', '아이템 크기'),
           append(
             el('div'),
-            append(el('div'), append(el('p', 'innerHTML', 'XS'), el('input', 'type', 'radio', 'id', 'size-xs', 'checked', 'true', 'name', 'size'))),
-            append(el('div'), append(el('p', 'innerHTML', 'S'), el('input', 'type', 'radio', 'id', 'size-s', 'name', 'size'))),
-            append(el('div'), append(el('p', 'innerHTML', 'M'), el('input', 'type', 'radio', 'id', 'size-m', 'name', 'size'))),
+            append(
+              el('div'),
+              append(
+                el('p', 'innerHTML', 'XS'),
+                el('input', 'type', 'radio', 'id', 'size-xs', 'checked', radioModel.state, 'addEventListener', [
+                  'change',
+                  (e) => ctrl.$radioToggle(e.target.id),
+                ]),
+              ),
+            ),
+            append(
+              el('div'),
+              append(
+                el('p', 'innerHTML', 'S'),
+                el('input', 'type', 'radio', 'id', 'size-s', 'checked', radioModel2.state, 'addEventListener', [
+                  'change',
+                  (e) => ctrl.$radioToggle2(e.target.id),
+                ]),
+              ),
+            ),
+            append(
+              el('div'),
+              append(
+                el('p', 'innerHTML', 'M'),
+                el('input', 'type', 'radio', 'id', 'size-m', 'checked', radioModel3.state, 'addEventListener', [
+                  'change',
+                  (e) => ctrl.$radioToggle3(e.target.id),
+                ]),
+              ),
+            ),
           ),
         ),
         append(

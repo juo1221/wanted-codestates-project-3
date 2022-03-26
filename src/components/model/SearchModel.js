@@ -2,21 +2,18 @@ import Model from '@Components/model/Model';
 import singleton from '@Components/Single';
 
 const SearchModel = class extends Model {
-  #readonly = false;
-  #state = true;
   constructor(isSingleton) {
-    super();
-    if (isSingleton) return singleton.getInstance(this);
+    super(isSingleton);
   }
   get readonly() {
-    return this.#readonly;
+    return this._readonly;
   }
   get state() {
-    return this.#state;
+    return this._state;
   }
   toggle() {
-    this.#readonly = !this.#readonly;
-    this.#state = !this.#state;
+    this._readonly = !this._readonly;
+    this._state = !this._state;
     this.notify();
   }
 };
