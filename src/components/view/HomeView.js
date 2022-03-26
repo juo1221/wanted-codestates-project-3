@@ -13,8 +13,8 @@ const HomeView = class extends View {
     super(controller, isSingleton);
   }
   render(props) {
-    const { model: hmodel, smodel, titleAvModel, titleSeModel, checkBoxModel } = props;
-    console.log(checkBoxModel);
+    const { model: hmodel, smodel, titleAvModel, titleSeModel, checkBoxModel1, checkBoxModelS, checkBoxModel3 } = props;
+    // console.log(checkBoxModel1);
     if (!is(hmodel, HomeModel)) err(`invalid model : ${hmodel}`);
     if (!is(smodel, HomeModel)) err(`invalid model : ${smodel}`);
     const { controller: ctrl } = this;
@@ -22,10 +22,21 @@ const HomeView = class extends View {
       el('div'),
       append(
         el('section', 'id', 'container-avaliable'),
-        el('input', 'className', 'searchBar', 'type', 'text', 'placeholder', 'search', 'autocomplete', 'off', 'addEventListener', [
-          'change',
-          (e) => ctrl.$search(e.target),
-        ]),
+        el(
+          'input',
+          'className',
+          'searchBar',
+          'type',
+          'text',
+          'placeholder',
+          'search',
+          'autocomplete',
+          'off',
+          'readOnly',
+          checkBoxModelS.readonly,
+          'addEventListener',
+          ['change', (e) => ctrl.$search(e.target)],
+        ),
         el('h1', 'className', 'container-title', 'innerHTML', titleAvModel.title),
         append(
           el('ul', 'className', 'item-container'),
@@ -48,10 +59,21 @@ const HomeView = class extends View {
       ),
       append(
         el('section', 'id', 'container-selected'),
-        el('input', 'className', 'searchBar', 'type', 'text', 'placeholder', 'search', 'autocomplete', 'off', 'addEventListener', [
-          'change',
-          (e) => ctrl.$searchOpt(e.target),
-        ]),
+        el(
+          'input',
+          'className',
+          'searchBar',
+          'type',
+          'text',
+          'placeholder',
+          'search',
+          'autocomplete',
+          'off',
+          'readOnly',
+          checkBoxModelS.readonly,
+          'addEventListener',
+          ['change', (e) => ctrl.$searchOpt(e.target)],
+        ),
         el('h1', 'className', 'container-title', 'innerHTML', titleSeModel.title),
         append(
           el('ul', 'className', 'item-container'),
@@ -70,7 +92,7 @@ const HomeView = class extends View {
         append(
           el('div', 'className', 'setting-title'),
           el('p', 'innerHTML', '타이틀'),
-          el('input', 'type', 'checkbox', 'checked', checkBoxModel.state, 'addEventListener', ['change', () => ctrl.$lock()]),
+          el('input', 'type', 'checkbox', 'checked', checkBoxModel1.state, 'addEventListener', ['change', () => ctrl.$lock()]),
           append(
             el('div'),
             el(
@@ -82,20 +104,32 @@ const HomeView = class extends View {
               'placeholder',
               'available options',
               'readOnly',
-              checkBoxModel.readonly,
+              checkBoxModel1.readonly,
               'addEventListener',
               ['change', (e) => ctrl.$chageTitleAv(e.target.value.trim())],
             ),
-            el('input', 'type', 'text', 'id', 'selected', 'placeholder', 'selected options', 'readOnly', checkBoxModel.readonly, 'addEventListener', [
-              'change',
-              (e) => ctrl.$chageTitleSe(e.target.value.trim()),
-            ]),
+            el(
+              'input',
+              'type',
+              'text',
+              'id',
+              'selected',
+              'placeholder',
+              'selected options',
+              'readOnly',
+              checkBoxModel1.readonly,
+              'addEventListener',
+              ['change', (e) => ctrl.$chageTitleSe(e.target.value.trim())],
+            ),
           ),
         ),
         append(
           el('div', 'className', 'setting-search'),
           el('p', 'innerHTML', '검색'),
-          el('input', 'type', 'checkbox', 'id', 'search-controller', 'checked', 'true'),
+          el('input', 'type', 'checkbox', 'id', 'search-controller', 'checked', checkBoxModelS.state, 'addEventListener', [
+            'change',
+            (e) => ctrl.$lockSearch(),
+          ]),
         ),
         append(
           el('div', 'className', 'setting-move'),

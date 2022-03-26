@@ -8,6 +8,8 @@ import SelectedDetailModel from '@Components/model/SelectedDetailModel';
 import TitleAvModel from '@Components/model/TitleAvModel';
 import TitleSeModel from '@Components/model/TitleSeModel';
 import CheckBoxModel from '@Components/model/CheckBoxModel';
+import CheckBoxModelS from '@Components/model/CheckBoxModelS';
+import SearchModel from '@Components/model/SearchModel';
 
 import { is } from '@Utils/util';
 import { setTimeout } from 'core-js';
@@ -89,9 +91,14 @@ const Home = class extends Controller {
     titleSeModel.changeTo(input);
   }
   $lock() {
-    const checkBoxModel = new CheckBoxModel(true);
-    checkBoxModel.addController(this);
-    checkBoxModel.toggle();
+    const checkBoxModel1 = new CheckBoxModel(true);
+    checkBoxModel1.addController(this);
+    checkBoxModel1.toggle();
+  }
+  $lockSearch() {
+    const checkBoxModelS = new CheckBoxModelS(true);
+    checkBoxModelS.addController(this);
+    checkBoxModelS.toggle();
   }
   home() {
     app.route('home');
@@ -102,12 +109,19 @@ const Home = class extends Controller {
     const smodel = new SelectedHomeModel(true);
     const titleAvModel = new TitleAvModel(true);
     const titleSeModel = new TitleSeModel(true);
-    const checkBoxModel = new CheckBoxModel(true);
+    const checkBoxModel1 = new CheckBoxModel(true);
+    const checkBoxModelS = new CheckBoxModelS(true);
+    const checkBoxModel3 = new CheckBoxModel(false);
+    const searchModel = new SearchModel(true);
     model.addController(this);
     smodel.addController(this);
     titleAvModel.addController(this);
     titleSeModel.addController(this);
-    const props = { model, smodel, titleAvModel, titleSeModel, checkBoxModel };
+    checkBoxModel1.addController(this);
+    checkBoxModelS.addController(this);
+    checkBoxModel3.addController(this);
+    searchModel.addController(this);
+    const props = { model, smodel, titleAvModel, titleSeModel, checkBoxModel1, checkBoxModelS, checkBoxModel3 };
     return view.render(props);
   }
   listen(model = err('')) {
@@ -121,6 +135,7 @@ const Home = class extends Controller {
         this.home();
         break;
       case is(model, CheckBoxModel):
+      case is(model, SearchModel):
         this.home();
         break;
       default:
