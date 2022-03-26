@@ -15,7 +15,7 @@ const HomeModel = class extends Model {
     return new Promise(async (res, rej) => {
       if (!this._data || !(this._data instanceof Data)) err(`invalid data : ${this._data}`);
       const { datas } = await this._data.getData();
-      prop(this, { _list: datas.map(({ id, name, emoji }) => new DetailModel(id, name, emoji)) });
+      prop(this, { _list: datas.map(({ id, name, emoji }) => new DetailModel(id, name, emoji)).sort((a, b) => a.id - b.id) });
       // console.log(this._list);
       res('done');
     });

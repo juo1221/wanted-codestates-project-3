@@ -13,7 +13,11 @@ const HomeView = class extends View {
   constructor(controller, isSingleton) {
     super(controller, isSingleton);
     const settingBtn = sel('.btn-setting');
-    settingBtn.addEventListener('click', () => sel('#setting').classList.toggle('activated'));
+
+    settingBtn.onclick = () => {
+      console.log(sel('#setting'));
+      sel('#setting').classList.toggle('activated');
+    };
   }
   render(props) {
     const {
@@ -30,7 +34,7 @@ const HomeView = class extends View {
       itemSizeModel,
       containerModel,
     } = props;
-
+    console.log(hmodel);
     if (!is(hmodel, HomeModel)) err(`invalid model : ${hmodel}`);
     if (!is(smodel, HomeModel)) err(`invalid model : ${smodel}`);
     const { controller: ctrl } = this;
@@ -66,7 +70,7 @@ const HomeView = class extends View {
           el('ul', 'className', 'item-container'),
           ...hmodel.list.map((li) =>
             append(
-              el('li', 'className', `item ${itemSizeModel.size}`, 'addEventListener', ['click', () => ctrl.$select(li.id)]),
+              el('li', 'className', `item ${itemSizeModel.size}`, 'addEventListener', ['click', (e) => ctrl.$select(e, li.id)]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),
             ),
           ),
@@ -111,7 +115,7 @@ const HomeView = class extends View {
           el('ul', 'className', 'item-container'),
           ...smodel.list.map((li) => {
             return append(
-              el('li', 'className', `item ${itemSizeModel.size}`, 'addEventListener', ['click', () => ctrl.$selectOpt(li.id)]),
+              el('li', 'className', `item ${itemSizeModel.size}`, 'addEventListener', ['click', (e) => ctrl.$selectOpt(e, li.id)]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),
             );
           }),
@@ -157,7 +161,10 @@ const HomeView = class extends View {
         append(
           el('div', 'className', 'setting-move'),
           el('p', 'innerHTML', '하나씩만 옮기기'),
-          el('input', 'type', 'checkbox', 'id', 'move-controller', 'checked', 'true'),
+          el('input', 'type', 'checkbox', 'id', 'move-controller', 'checked', checkBoxModel3.state, 'addEventListener', [
+            'change',
+            (e) => ctrl.$lockMove(e.target.id),
+          ]),
         ),
         append(
           el('div', 'className', 'setting-showcnt'),

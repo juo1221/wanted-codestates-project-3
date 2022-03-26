@@ -9,6 +9,7 @@ import TitleAvModel from '@Components/model/TitleAvModel';
 import TitleSeModel from '@Components/model/TitleSeModel';
 import CheckBoxModel from '@Components/model/CheckBoxModel';
 import CheckBoxModelS from '@Components/model/CheckBoxModelS';
+import CheckBoxModelM from '@Components/model/CheckBoxModelM';
 import SearchModel from '@Components/model/SearchModel';
 import RadioModel from '@Components/model/RadioModel';
 import RadioModel2 from '@Components/model/RadioModel2';
@@ -41,15 +42,40 @@ const Home = class extends Controller {
     model.addController(this);
     model.search(target, modelList);
   }
-  $select(id) {
-    const model = new HomeModel(true).get(id);
-    model.addController(this);
-    model.toggle();
+  $select(e, id) {
+    const model = new HomeModel(true);
+    const checkBoxModelM = new CheckBoxModelM(true);
+    const target = model.get(id);
+    target.addController(this);
+    if (checkBoxModelM.state) {
+      model.find().forEach((li) => li.id !== target.id && li.reset());
+      target.toggle();
+    } else {
+      console.log(1);
+      if (e.metaKey || e.ctrlKey) {
+        target.toggle();
+      } else {
+        model.find().forEach((li) => li.id !== target.id && li.reset());
+        target.toggle();
+      }
+    }
   }
-  $selectOpt(id) {
-    const model = new SelectedHomeModel(true).get(id);
-    model.addController(this);
-    model.toggle();
+  $selectOpt(e, id) {
+    const model = new SelectedHomeModel(true);
+    const checkBoxModelM = new CheckBoxModelM(true);
+    const target = model.get(id);
+    target.addController(this);
+    if (checkBoxModelM.state) {
+      model.find().forEach((li) => li.id !== target.id && li.reset());
+      target.toggle();
+    } else {
+      if (e.metaKey || e.ctrlKey) {
+        target.toggle();
+      } else {
+        model.find().forEach((li) => li.id !== target.id && li.reset());
+        target.toggle();
+      }
+    }
   }
   async $reset() {
     const model = new HomeModel(true);
@@ -105,6 +131,11 @@ const Home = class extends Controller {
     checkBoxModelS.addController(this);
     checkBoxModelS.toggle();
   }
+  $lockMove() {
+    const checkBoxModelM = new CheckBoxModelM(true);
+    checkBoxModelM.addController(this);
+    checkBoxModelM.toggle();
+  }
   $radioToggle(size) {
     const radioModel = new RadioModel(true);
     const radioModel2 = new RadioModel2(true);
@@ -159,7 +190,7 @@ const Home = class extends Controller {
     const titleSeModel = new TitleSeModel(true);
     const checkBoxModel1 = new CheckBoxModel(true);
     const checkBoxModelS = new CheckBoxModelS(true);
-    const checkBoxModel3 = new CheckBoxModel(false);
+    const checkBoxModel3 = new CheckBoxModelM(true);
     const searchModel = new SearchModel(true);
     const radioModel = new RadioModel(true);
     const radioModel2 = new RadioModel2(true);
