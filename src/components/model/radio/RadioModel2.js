@@ -11,7 +11,7 @@ const RadioModel2 = class extends Model {
     return this.#state;
   }
   chageState(state) {
-    this.#state = !this.#state;
+    this.#state = state;
   }
 };
 
