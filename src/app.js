@@ -26,10 +26,10 @@ const App = class extends Map {
   add(k = err(`no path`), controllerF = err(`no controller`)) {
     if (!super.has(k)) super.set(k, controllerF);
   }
-  async route(path, ...arg) {
+  route(path, ...arg) {
     if (!super.has(path)) err(`no path in App : ${path}`);
     const controller = super.get(path)();
-    append(el(sel(this.#parent), 'innerHTML', ''), await controller['base'](...arg));
+    append(el(sel(this.#parent), 'innerHTML', ''), controller['base'](...arg));
   }
 };
 

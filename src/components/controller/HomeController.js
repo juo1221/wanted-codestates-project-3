@@ -103,6 +103,7 @@ const Home = class extends Controller {
     const model = new HomeModel(true);
     const smodel = new SelectedHomeModel(true);
     const target = smodel.find();
+    target.forEach((li) => li.reset());
     model.add(...target);
     smodel.remove(...target);
   }
@@ -110,6 +111,7 @@ const Home = class extends Controller {
     const model = new HomeModel(true);
     const smodel = new SelectedHomeModel(true);
     const target = model.find();
+    target.forEach((li) => li.reset());
     smodel.add(...target);
     model.remove(...target);
   }
@@ -194,7 +196,7 @@ const Home = class extends Controller {
   home() {
     app.route('home');
   }
-  async base() {
+  base() {
     const model = new HomeModel(true);
     const view = new HomeView(this, true);
     const smodel = new SelectedHomeModel(true);

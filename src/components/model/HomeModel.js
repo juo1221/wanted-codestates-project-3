@@ -16,14 +16,13 @@ const HomeModel = class extends Model {
       if (!this._data || !(this._data instanceof Data)) err(`invalid data : ${this._data}`);
       const { datas } = await this._data.getData();
       prop(this, { _list: datas.map(({ id, name, emoji }) => new DetailModel(id, name, emoji)).sort((a, b) => a.id - b.id) });
-      // console.log(this._list);
       res('done');
     });
   }
   add(...list) {
     for (const li of list) if (!is(li, DetailModel)) err(`invalid list : ${list}`);
     if (!this._list) this._list = [];
-    (this._list.push(...list), this._list).forEach((li) => li.reset());
+    this._list.push(...list);
   }
   remove(...list) {
     for (const li of list) if (!is(li, DetailModel)) err(`invalid list : ${list}`);

@@ -5,7 +5,6 @@ const ItemSizeModel = class extends Model {
   #size = 'size-xs';
   constructor(isSingleton) {
     super();
-    console.log(singleton.getInstance(this));
     if (isSingleton) return singleton.getInstance(this);
   }
   get size() {

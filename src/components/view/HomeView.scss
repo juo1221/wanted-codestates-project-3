@@ -40,6 +40,9 @@
   border-top: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
 }
+.item-checked {
+  background-color: $border-color;
+}
 .size-xs {
   height: $size-xs;
 }

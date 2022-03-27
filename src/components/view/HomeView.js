@@ -67,7 +67,10 @@ const HomeView = class extends View {
           el('ul', 'className', 'item-container'),
           ...hmodel.list.map((li) =>
             append(
-              el('li', 'className', `item ${itemSizeModel.size}`, 'addEventListener', ['click', (e) => ctrl.$select(e, li.id)]),
+              el('li', 'className', `item ${itemSizeModel.size} ${li.state ? 'item-checked' : ''}`, 'addEventListener', [
+                'click',
+                (e) => ctrl.$select(e, li.id),
+              ]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),
             ),
           ),
@@ -115,7 +118,10 @@ const HomeView = class extends View {
           el('ul', 'className', 'item-container'),
           ...smodel.list.map((li) => {
             return append(
-              el('li', 'className', `item ${itemSizeModel.size}`, 'addEventListener', ['click', (e) => ctrl.$selectOpt(e, li.id)]),
+              el('li', 'className', `item ${itemSizeModel.size} ${li.state ? 'item-checked' : ''}`, 'addEventListener', [
+                'click',
+                (e) => ctrl.$selectOpt(e, li.id),
+              ]),
               el('span', 'innerHTML', `${li.emoji} ${li.name}`),
             );
           }),
