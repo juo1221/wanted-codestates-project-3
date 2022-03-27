@@ -80,7 +80,7 @@ const Home = class extends Controller {
           target.toggle();
           break;
         case e.shiftKey:
-          target.toggle();
+          model.shiftToggle(target);
           break;
         default:
           model.find().forEach((li) => li.id !== target.id && li.reset());
