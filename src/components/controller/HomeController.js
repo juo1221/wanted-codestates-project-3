@@ -112,6 +112,7 @@ const Home = class extends Controller {
     const model = new HomeModel(true);
     const smodel = new SelectedHomeModel(true);
     const target = smodel.find();
+    if (!target) return;
     target.forEach((li) => li.reset());
     model.add(...target);
     smodel.remove(...target);
@@ -120,6 +121,7 @@ const Home = class extends Controller {
     const model = new HomeModel(true);
     const smodel = new SelectedHomeModel(true);
     const target = model.find();
+    if (!target) return;
     target.forEach((li) => li.reset());
     smodel.add(...target);
     model.remove(...target);

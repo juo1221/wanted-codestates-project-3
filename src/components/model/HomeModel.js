@@ -23,6 +23,7 @@ const HomeModel = class extends Model {
     for (const li of list) if (!is(li, DetailModel)) err(`invalid list : ${list}`);
     if (!this._list) this._list = [];
     this._list.push(...list);
+    this._list.sort((a, b) => a.id - b.id);
   }
   remove(...list) {
     for (const li of list) if (!is(li, DetailModel)) err(`invalid list : ${list}`);
@@ -79,6 +80,7 @@ const HomeModel = class extends Model {
     this.notify();
   }
   find() {
+    if (!this._list) return;
     return this._list.filter((li) => li.find());
   }
   clear() {
@@ -118,12 +120,12 @@ const HomeModel = class extends Model {
         break;
       default:
         this.find().forEach((li) => li.reset());
-        lastTarget.toggle();
+        lastTarget.resetTrue();
     }
     restOfFiltered.forEach((li) => li.reset());
     filtered.forEach((li) => {
       li.reset();
-      li.toggle();
+      li.resetTrue();
     });
   }
   get list() {

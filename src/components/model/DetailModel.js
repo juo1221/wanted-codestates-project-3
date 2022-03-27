@@ -40,6 +40,10 @@ const DetailModel = class extends Model {
     this.#size = size;
     this.notify();
   }
+  resetTrue() {
+    this.#state = true;
+    this.notify();
+  }
   toggle() {
     this.#state = !this.#state;
     this.notify();
