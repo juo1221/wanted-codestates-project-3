@@ -12,3 +12,7 @@ body {
     right: -2rem;
   }
 }
+
+#main {
+  @include flexF();
+}

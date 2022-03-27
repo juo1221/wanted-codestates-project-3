@@ -17,6 +17,7 @@ import RadioModel2 from '@Components/model/radio/RadioModel2';
 import RadioModel3 from '@Components/model/radio/RadioModel3';
 import ItemSizeModel from '@Components/model/ItemSizeModel';
 import ContainerModel from '@Components/model/ContainerModel';
+import SettingModel from '@Components/model/SettingModel';
 
 import { is } from '@Utils/util';
 import { setTimeout } from 'core-js';
@@ -185,6 +186,11 @@ const Home = class extends Controller {
     containerModel.addController(this);
     containerModel.changeHeight(height);
   }
+  $settingToggle() {
+    const settingmodel = new SettingModel(true);
+    settingmodel.addController(this);
+    settingmodel.toggle();
+  }
   home() {
     app.route('home');
   }
@@ -204,6 +210,7 @@ const Home = class extends Controller {
     const radioModel3 = new RadioModel3(true);
     const itemSizeModel = new ItemSizeModel(true);
     const containerModel = new ContainerModel(true);
+    const settingModel = new SettingModel(true);
     model.addController(this);
     smodel.addController(this);
     titleAvModel.addController(this);
@@ -215,7 +222,7 @@ const Home = class extends Controller {
     searchModel.addController(this);
     itemSizeModel.addController(this);
     containerModel.addController(this);
-
+    settingModel.addController(this);
     const props = {
       model,
       smodel,
@@ -230,6 +237,7 @@ const Home = class extends Controller {
       radioModel3,
       itemSizeModel,
       containerModel,
+      settingModel,
     };
     return view.render(props);
   }
@@ -257,6 +265,9 @@ const Home = class extends Controller {
         this.home();
         break;
       case is(model, ContainerModel):
+        this.home();
+        break;
+      case is(model, SettingModel):
         this.home();
         break;
       default:

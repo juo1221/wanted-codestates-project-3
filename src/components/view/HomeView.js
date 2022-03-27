@@ -13,11 +13,7 @@ const HomeView = class extends View {
   constructor(controller, isSingleton) {
     super(controller, isSingleton);
     const settingBtn = sel('.btn-setting');
-
-    settingBtn.onclick = () => {
-      console.log(sel('#setting'));
-      sel('#setting').classList.toggle('activated');
-    };
+    settingBtn.onclick = () => controller.$settingToggle();
   }
   render(props) {
     const {
@@ -34,8 +30,8 @@ const HomeView = class extends View {
       radioModel3,
       itemSizeModel,
       containerModel,
+      settingModel,
     } = props;
-    console.log(hmodel);
     if (!is(hmodel, HomeModel)) err(`invalid model : ${hmodel}`);
     if (!is(smodel, HomeModel)) err(`invalid model : ${smodel}`);
     const { controller: ctrl } = this;
@@ -130,7 +126,7 @@ const HomeView = class extends View {
         ),
       ),
       append(
-        el('section', 'id', 'setting'),
+        el('section', 'id', 'setting', 'className', settingModel.state ? 'activated' : ''),
         el('div'),
         append(
           el('div', 'className', 'title'),
