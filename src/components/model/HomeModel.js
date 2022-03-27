@@ -96,6 +96,36 @@ const HomeModel = class extends Model {
       err(`invalid id : ${id}`);
     return res;
   }
+  shiftToggle(target) {
+    if (!is(target, DetailModel)) err(`invalid target: ${target}`);
+    let firstTarget = this.find()[0] || this._list[0];
+    let lastTarget = target;
+    let filtered = [];
+    let restOfFiltered = [];
+    switch (true) {
+      case firstTarget.id < lastTarget.id:
+        filtered = this._list.filter((li) => {
+          if (li.id >= firstTarget.id && li.id <= lastTarget.id) return li;
+          else restOfFiltered.push(li);
+        });
+        break;
+      case firstTarget.id > lastTarget.id:
+        firstTarget = this.find()[this.find().length - 1];
+        filtered = this._list.filter((li) => {
+          if (li.id <= firstTarget.id && li.id >= lastTarget.id) return li;
+          else restOfFiltered.push(li);
+        });
+        break;
+      default:
+        this.find().forEach((li) => li.reset());
+        lastTarget.toggle();
+    }
+    restOfFiltered.forEach((li) => li.reset());
+    filtered.forEach((li) => {
+      li.reset();
+      li.toggle();
+    });
+  }
   get list() {
     return this._list ? [...this._list] : [];
   }

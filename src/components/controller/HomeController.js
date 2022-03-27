@@ -53,12 +53,16 @@ const Home = class extends Controller {
       model.find().forEach((li) => li.id !== target.id && li.reset());
       target.toggle();
     } else {
-      console.log(1);
-      if (e.metaKey || e.ctrlKey) {
-        target.toggle();
-      } else {
-        model.find().forEach((li) => li.id !== target.id && li.reset());
-        target.toggle();
+      switch (true) {
+        case e.metaKey || e.ctrlKey:
+          target.toggle();
+          break;
+        case e.shiftKey:
+          model.shiftToggle(target);
+          break;
+        default:
+          model.find().forEach((li) => li.id !== target.id && li.reset());
+          target.toggle();
       }
     }
   }
@@ -71,11 +75,16 @@ const Home = class extends Controller {
       model.find().forEach((li) => li.id !== target.id && li.reset());
       target.toggle();
     } else {
-      if (e.metaKey || e.ctrlKey) {
-        target.toggle();
-      } else {
-        model.find().forEach((li) => li.id !== target.id && li.reset());
-        target.toggle();
+      switch (true) {
+        case e.metaKey || e.ctrlKey:
+          target.toggle();
+          break;
+        case e.shiftKey:
+          target.toggle();
+          break;
+        default:
+          model.find().forEach((li) => li.id !== target.id && li.reset());
+          target.toggle();
       }
     }
   }
