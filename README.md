@@ -6,6 +6,7 @@
 - HTML
 - SCSS
 - Vanilla Js
+- webpack 5
 
 # Vanilla Js를 사용한 이유
 
